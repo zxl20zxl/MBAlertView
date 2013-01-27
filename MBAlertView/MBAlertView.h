@@ -50,7 +50,7 @@ extern CGFloat MBAlertViewDefaultHUDHideDelay;
 
 // body is the main text of the alert
 @property (nonatomic, copy) NSString *bodyText;
-@property (nonatomic, copy) UIFont *bodyFont;
+@property (nonatomic, strong) UIFont *bodyFont;
 
 // just set the imageView's image to activate
 @property (nonatomic, strong) UIImageView *imageView;

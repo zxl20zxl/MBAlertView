@@ -15,7 +15,7 @@ typedef enum {
 }MBAlertViewItemType;
 
 @interface MBAlertViewItem : NSObject
-@property (nonatomic, strong) id block;
+@property (nonatomic, copy) id block;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, assign) MBAlertViewItemType type;
 -(id)initWithTitle:(NSString*)text type:(MBAlertViewItemType)type block:(id)block;
