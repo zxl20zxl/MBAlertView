@@ -10,7 +10,7 @@
 
 @implementation MBAlertViewItem
 
--(id)initWithTitle:(NSString*)text type:(MBAlertViewItemType)type block:(id)block
+-(id)initWithTitle:(NSString*)text type:(MBAlertViewItemType)type block:(void (^)())block
 {
     if(self = [super init]) {
         _title = text;

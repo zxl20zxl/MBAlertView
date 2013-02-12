@@ -63,11 +63,11 @@ extern CGFloat MBAlertViewDefaultHUDHideDelay;
 
 -(void)dismiss;
 -(void)addToDisplayQueue;
--(void)addButtonWithText:(NSString*)text type:(MBAlertViewItemType)type block:(id)block;
+-(void)addButtonWithText:(NSString*)text type:(MBAlertViewItemType)type block:(void (^)())block;
 
 #pragma mark Class methods
 // factory method
-+(MBAlertView*)alertWithBody:(NSString*)body cancelTitle:(NSString*)cancelTitle cancelBlock:(id)cancelBlock;
++(MBAlertView*)alertWithBody:(NSString*)body cancelTitle:(NSString*)cancelTitle cancelBlock:(void (^)())cancelBlock;
 
 // yes if there is currently an alert or hud on screen
 +(BOOL)alertIsVisible;
