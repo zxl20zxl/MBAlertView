@@ -18,5 +18,5 @@ typedef enum {
 @property (nonatomic, copy) id block;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, assign) MBAlertViewItemType type;
--(id)initWithTitle:(NSString*)text type:(MBAlertViewItemType)type block:(id)block;
+-(id)initWithTitle:(NSString*)text type:(MBAlertViewItemType)type block:(void (^)())block;
 @end

@@ -56,7 +56,7 @@ static MBAlertView *currentAlert;
     return CGSizeMake(280, 240);
 }
 
-+(MBAlertView*)alertWithBody:(NSString*)body cancelTitle:(NSString*)cancelTitle cancelBlock:(id)cancelBlock
++(MBAlertView*)alertWithBody:(NSString*)body cancelTitle:(NSString*)cancelTitle cancelBlock:(void (^)())cancelBlock
 {
     MBAlertView *alert = [[MBAlertView alloc] init];
     alert.bodyText = body;
@@ -218,7 +218,7 @@ static MBAlertView *currentAlert;
     return _items;
 }
 
--(void)addButtonWithText:(NSString*)text type:(MBAlertViewItemType)type block:(id)block
+-(void)addButtonWithText:(NSString*)text type:(MBAlertViewItemType)type block:(void (^)())block
 {
     MBAlertViewItem *item = [[MBAlertViewItem alloc] initWithTitle:text type:type block:block];
     [self.items addObject:item];
