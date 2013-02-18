@@ -15,7 +15,7 @@
     if(self = [super init]) {
         _title = text;
         _type = type;
-        _block = block;
+        self.block = block;
     }
     return self;
 }
