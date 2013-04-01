@@ -20,7 +20,7 @@
     UIViewController *controller = [UIViewController new];
     self.window.rootViewController = controller;
     
-    [MBHUDView hudWithBody:@"Hello" type:MBAlertViewHUDTypeCheckmark hidesAfter:1.0 show:YES];
+//    [MBHUDView hudWithBody:@"Hello" type:MBAlertViewHUDTypeCheckmark hidesAfter:1.0 show:YES];
     MBAlertView *alert = [MBAlertView alertWithBody:@"Do you want to see more? (Note: you don't have a choice)" cancelTitle:nil cancelBlock:nil];
     [alert addButtonWithText:@"Yes" type:MBAlertViewItemTypePositive block:^{
         [MBHUDView hudWithBody:@"Say please" type:MBAlertViewHUDTypeExclamationMark hidesAfter:1.5 show:YES];
@@ -53,6 +53,14 @@
         }];
         [please addToDisplayQueue];
     }];
+    
+    [alert addButtonWithText:@"No" type:MBAlertViewItemTypeDestructive block:^{
+        //
+    }];
+    [alert addButtonWithText:@"I don\'t know" type:MBAlertViewItemTypeDefault block:^{
+        //
+    }];
+    
     [alert addToDisplayQueue];
     return YES;
 }
