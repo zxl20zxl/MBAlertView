@@ -35,7 +35,7 @@ extern NSString *const MBAlertViewDidDismissNotification;
 extern CGFloat MBAlertViewMaxHUDDisplayTime;
 extern CGFloat MBAlertViewDefaultHUDHideDelay;
 
-@interface MBAlertView : UIViewController
+@interface MBAlertView : UIViewController <UIGestureRecognizerDelegate>
 // if yes, will wait until alert has disappeared before performing any button blocks
 @property (nonatomic, assign) BOOL shouldPerformBlockAfterDismissal;
 

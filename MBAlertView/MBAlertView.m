@@ -229,11 +229,22 @@ static MBAlertView *currentAlert;
 // if there is only one button on the alert, we're going to assume its just an OK option, so we'll let the user tap anywhere to dismiss the alert
 -(void)didTapOutsideOfButtons:(UITapGestureRecognizer *)recognizer
 {
-    if(_buttons.count == 1)
-    {
-        MBAlertViewButton *alertButton = [_buttons objectAtIndex:0];
-        [self didSelectButton:alertButton];
+    if (recognizer.state == UIGestureRecognizerStateEnded) {
+        if(_buttons.count == 1)
+        {
+            MBAlertViewButton *alertButton = [_buttons objectAtIndex:0];
+            [self didSelectButton:alertButton];
+        }
     }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    // test if our control subview is on-screen
+    if ([touch.view isKindOfClass:[MBAlertViewButton class]]) {
+        // we touched a button
+        return NO; // ignore the touch
+    }
+    return YES; // handle the touch
 }
 
 -(NSMutableArray*)items
@@ -295,6 +306,8 @@ static MBAlertView *currentAlert;
     self.modalBackground.alpha = _backgroundAlpha > 0 ? _backgroundAlpha : 0.85;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOutsideOfButtons:)];
+    [tap setCancelsTouchesInView:NO];
+    tap.delegate = self;
     [self.view addGestureRecognizer:tap];
     
     [self.view addSubview:self.modalBackground];
@@ -507,7 +520,9 @@ static MBAlertView *currentAlert;
     }];
     
     CGFloat requiredHeight = currentYOrigin;
-    self.buttonCollectionView.frame = CGRectMake(0, 0, self.buttonCollectionView.frame.size.width, requiredHeight);
+    CGRect bcvFrame = self.buttonCollectionView.frame;
+    bcvFrame.size.height = requiredHeight;
+    self.buttonCollectionView.frame = bcvFrame;
     
     [self.contentView addSubview:self.buttonCollectionView];
     self.buttonCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

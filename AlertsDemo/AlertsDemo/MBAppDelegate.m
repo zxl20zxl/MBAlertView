@@ -20,7 +20,7 @@
     UIViewController *controller = [UIViewController new];
     self.window.rootViewController = controller;
     
-//    [MBHUDView hudWithBody:@"Hello" type:MBAlertViewHUDTypeCheckmark hidesAfter:1.0 show:YES];
+    [MBHUDView hudWithBody:@"Hello" type:MBAlertViewHUDTypeCheckmark hidesAfter:1.0 show:YES];
     MBAlertView *alert = [MBAlertView alertWithBody:@"Do you want to see more? \n\n(Note: you do have a choice with multibuttons)]" cancelTitle:nil cancelBlock:nil];
     [alert addButtonWithText:@"Yes" type:MBAlertViewItemTypePositive block:^{
         [MBHUDView hudWithBody:@"Say please" type:MBAlertViewHUDTypeExclamationMark hidesAfter:1.5 show:YES];
@@ -50,7 +50,7 @@
             }];
             
             [destruct addButtonWithText:@"No thank you" type:MBAlertViewItemTypeDefault block:^{
-                [MBHUDView hudWithBody:@"Oh.\n\nOk, bye." type:MBAlertViewHUDTypeDefault hidesAfter:2.0 show:YES];
+                //[MBHUDView hudWithBody:@"Oh.\n\nOk, bye." type:MBAlertViewHUDTypeDefault hidesAfter:2.0 show:YES];
             }];
             
             [destruct addToDisplayQueue];
@@ -60,7 +60,7 @@
     }];
     
     void (^goodbye)() = ^{
-        [MBHUDView hudWithBody:@"Goodbye" type:MBAlertViewHUDTypeDefault hidesAfter:2.0 show:YES];
+        [MBHUDView hudWithBody:@"Goodbye then" type:MBAlertViewHUDTypeDefault hidesAfter:2.0 show:YES];
     };
     
     [alert addButtonWithText:@"No" type:MBAlertViewItemTypeDestructive block:goodbye];
