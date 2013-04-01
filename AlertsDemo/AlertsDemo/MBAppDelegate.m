@@ -21,7 +21,7 @@
     self.window.rootViewController = controller;
     
 //    [MBHUDView hudWithBody:@"Hello" type:MBAlertViewHUDTypeCheckmark hidesAfter:1.0 show:YES];
-    MBAlertView *alert = [MBAlertView alertWithBody:@"Do you want to see more? (Note: you don't have a choice)" cancelTitle:nil cancelBlock:nil];
+    MBAlertView *alert = [MBAlertView alertWithBody:@"Do you want to see more? \n\n(Note: you do have a choice with multibuttons)]" cancelTitle:nil cancelBlock:nil];
     [alert addButtonWithText:@"Yes" type:MBAlertViewItemTypePositive block:^{
         [MBHUDView hudWithBody:@"Say please" type:MBAlertViewHUDTypeExclamationMark hidesAfter:1.5 show:YES];
         MBAlertView *please = [MBAlertView alertWithBody:@"Did you say please?" cancelTitle:nil cancelBlock:nil];
@@ -48,18 +48,27 @@
                     };
                 } afterDelay:2.0];
             }];
+            
+            [destruct addButtonWithText:@"No thank you" type:MBAlertViewItemTypeDefault block:^{
+                [MBHUDView hudWithBody:@"Oh.\n\nOk, bye." type:MBAlertViewHUDTypeDefault hidesAfter:2.0 show:YES];
+            }];
+            
             [destruct addToDisplayQueue];
             
         }];
         [please addToDisplayQueue];
     }];
     
-    [alert addButtonWithText:@"No" type:MBAlertViewItemTypeDestructive block:^{
-        //
-    }];
-    [alert addButtonWithText:@"I don\'t know" type:MBAlertViewItemTypeDefault block:^{
-        //
-    }];
+    void (^goodbye)() = ^{
+        [MBHUDView hudWithBody:@"Goodbye" type:MBAlertViewHUDTypeDefault hidesAfter:2.0 show:YES];
+    };
+    
+    [alert addButtonWithText:@"No" type:MBAlertViewItemTypeDestructive block:goodbye];
+    [alert addButtonWithText:@"I don\'t know" type:MBAlertViewItemTypeDefault block:goodbye];
+    [alert addButtonWithText:@"Maybe" type:MBAlertViewItemTypeDefault block:goodbye];
+    [alert addButtonWithText:@"I hope not" type:MBAlertViewItemTypeDefault block:goodbye];
+    [alert addButtonWithText:@"Hot Dang!" type:MBAlertViewItemTypeDestructive block:goodbye];
+    [alert addButtonWithText:@"NOoooooo" type:MBAlertViewItemTypePositive block:goodbye];
     
     [alert addToDisplayQueue];
     return YES;

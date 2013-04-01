@@ -131,7 +131,7 @@
         UIView *view = [dic objectForKey:@"view"];
         CGFloat offset = [[dic objectForKey:@"offset"] floatValue];
         CGRect rect = view.frame;
-        rect.origin = CGPointMake(rect.origin.x, currentYOrigin);
+        rect.origin = CGPointMake(rect.origin.x, currentYOrigin + offset);
         view.frame = rect;
         currentYOrigin += rect.size.height + offset;
     }

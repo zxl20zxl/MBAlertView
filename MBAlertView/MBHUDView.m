@@ -153,8 +153,8 @@
     [self.view addSubview:self.modalBackground];
     [self.view addSubview:self.contentView];
     
-    self.modalBackground.autoresizingMask = [self fullAutoResizingMask];
-    self.contentView.autoresizingMask = [self fullAutoResizingMask];
+    self.modalBackground.autoresizingMask = [self defaultAutoResizingMask];
+    self.contentView.autoresizingMask = [self defaultAutoResizingMask];
 }
 
 -(void)addToWindow

@@ -281,13 +281,13 @@ static MBAlertView *currentAlert;
     {
         self.contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, bounds.size.width, bounds.size.height)];
         
-        self.modalBackground = [[UIButton alloc] initWithFrame:CGRectMake(-100, -100, bounds.size.width + 200, bounds.size.height + 200)];
+        self.modalBackground = [[UIView alloc] initWithFrame:CGRectMake(-100, -100, bounds.size.width + 200, bounds.size.height + 200)];
     }
     else
     {
         self.contentView = [[UIView alloc] initWithFrame:CGRectMake(bounds.size.width/2.0 - self.size.width/2.0 , bounds.size.height/2.0 - self.size.height/2.0, self.size.width, self.size.height)];
         
-        self.modalBackground = [[UIButton alloc] initWithFrame:self.contentView.frame];
+        self.modalBackground = [[UIView alloc] initWithFrame:self.contentView.frame];
         self.modalBackground.layer.cornerRadius = 8;
     }
     
@@ -358,6 +358,7 @@ static MBAlertView *currentAlert;
         rect.origin = CGPointMake((self.contentView.frame.size.width/2.0 - rect.size.width/2.0), 0);
         _imageView.frame = rect;
         [self.contentView addSubview:self.imageView];
+        self.imageView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     }
         
     UIColor *titleColor = [UIColor whiteColor];
@@ -369,12 +370,15 @@ static MBAlertView *currentAlert;
     [self.items enumerateObjectsUsingBlock:^(MBAlertViewItem *item, NSUInteger index, BOOL *stop)
      {
          MBAlertViewButton *buttonLabel = [[MBAlertViewButton alloc] initWithTitle:item.title];
+         
          [buttonLabel addTarget:self action:@selector(didSelectButton:) forControlEvents:UIControlEventTouchUpInside];
          [buttonLabel addTarget:self action:@selector(didHighlightButton:) forControlEvents:UIControlEventTouchDown];
          [buttonLabel addTarget:self action:@selector(didRemoveHighlightFromButton:) forControlEvents:UIControlEventTouchUpOutside | UIControlEventTouchDragExit | UIControlEventTouchCancel];
+         
          buttonLabel.tag = index;
          buttonLabel.alertButtonType = item.type;
-         [_buttons addObject:buttonLabel];         
+         
+         [_buttons addObject:buttonLabel];
      }];
 }
 
@@ -405,10 +409,8 @@ static MBAlertView *currentAlert;
     [self centerViewsVertically];
 }
 
-
--(void)performLayoutOfButtons
+-(void)layoutButtonCollecitonView
 {
-    if ([_buttons count] <= 0) return;
     CGSize contentSize = self.contentView.bounds.size;
     CGFloat contentHeight = contentSize.height;
     CGFloat butttonCollectionHeight = contentHeight;
@@ -417,24 +419,30 @@ static MBAlertView *currentAlert;
     butttonCollectionHeight -= bodyLabelButtonHeight+20;
     
     self.buttonCollectionView.frame = CGRectMake(0, 0, contentSize.width, butttonCollectionHeight-20);
+}
+
+
+-(void)performLayoutOfButtons
+{
+    if ([_buttons count] <= 0) return;
     
+    [self layoutButtonCollecitonView];
     CGRect bounds = self.buttonCollectionView.bounds;
+    CGSize spacing = CGSizeMake(kSpaceBetweenButtons, kVerticalSpaceBetweenButtons);
     
-    float totalWidth = 0;
-    float totalHeight = 0;
-    
+    // reset butons to default height/width
     for(MBAlertViewButton *item in _buttons) {
-        CGSize size = item.frame.size;
-        totalWidth += size.width + kSpaceBetweenButtons;
-        totalHeight += size.height + kVerticalSpaceBetweenButtons;
+        item.frame = CGRectMake(0, 0, 100, 40);
     }
+    
+    CGSize totalSize = [self totalSize:_buttons withSpacing:spacing];
     
     NSMutableArray *buttonGrid;
     
-    if (totalWidth < bounds.size.width) {
+    if (totalSize.width < bounds.size.width) {
         buttonGrid = [self createSingleRowOfButtons];
     }
-    else if (totalHeight < bounds.size.height)
+    else if (totalSize.height < bounds.size.height)
     {
         buttonGrid = [self createSingleColumnOfButtons];
     }
@@ -442,55 +450,68 @@ static MBAlertView *currentAlert;
         buttonGrid = [self createGridOfButtons];
     }
     
-    totalWidth -= kSpaceBetweenButtons;
-    totalHeight -= kVerticalSpaceBetweenButtons;
+    __block CGFloat currentYOrigin = 0;
+    __block CGFloat widthOfLastRow = 0;
     
-    __block float currentYOrigin = 0;
-    __block float heightOfLastRow = 0;
-    
-    [buttonGrid enumerateObjectsUsingBlock:^(NSMutableArray *rows, NSUInteger idx, BOOL *stop) {
-        currentYOrigin += heightOfLastRow;
-        heightOfLastRow = 0;
+    [buttonGrid enumerateObjectsUsingBlock:^(NSMutableArray *row, NSUInteger idx, BOOL *stop) {
+        __block CGFloat heightOfLastRow = 0;
         
-        float rowTotalWidth = 0;
+        __block CGSize rowTotalSize = [self totalSize:row withSpacing:spacing];
         
-        for(MBAlertViewButton *item in rows) {
-            CGSize size = item.frame.size;
-            rowTotalWidth += size.width + kSpaceBetweenButtons;
-        }
-        rowTotalWidth -= kSpaceBetweenButtons;
-        __block float xOrigOfFirstItem = bounds.size.width/2.0 - rowTotalWidth/2.0;
-        __block float currentXOrigin = xOrigOfFirstItem;
+        CGFloat xOrigOfFirstItem = bounds.size.width/2.0 - rowTotalSize.width/2.0;
         
-        [rows enumerateObjectsUsingBlock:^(MBAlertViewButton *button, NSUInteger index, BOOL *stop) {
-            float origin = 0;
-            if(index == 0)
-                origin = currentXOrigin;
-            else origin = currentXOrigin + kSpaceBetweenButtons;
-            
-            currentXOrigin = origin + button.bounds.size.width;
-            float yOrigin = currentYOrigin;
+        __block CGFloat currentXOrigin = xOrigOfFirstItem;
+        
+        // show big buttons if only one colum (and more than one button)
+        __block BOOL only1InRow = ([row count] == 1 && [buttonGrid count] > 1);
+        
+        [row enumerateObjectsUsingBlock:^(MBAlertViewButton *button, NSUInteger index, BOOL *stop) {
+            CGFloat xOrigin = currentXOrigin;
+            CGFloat yOrigin = currentYOrigin;
             
             CGRect rect = button.frame;
-            rect.origin = CGPointMake(origin, yOrigin);
+            CGSize size = rect.size;
+            CGFloat width = size.width;
+            CGFloat height = size.height;
+            
+            if (only1InRow) {
+                if (widthOfLastRow > 0) {
+                    width = widthOfLastRow;
+                    xOrigin = bounds.size.width/2.0 - width/2.0;
+                    rowTotalSize.width = width;
+                } else {
+                    width = bounds.size.width - 2*kSpaceBetweenButtons;
+                    xOrigin = bounds.origin.x + kSpaceBetweenButtons;
+                    rowTotalSize.width = width;
+                }
+            }
+            
+            rect.size = CGSizeMake(width, height);
+            rect.origin = CGPointMake(xOrigin, yOrigin);
             button.frame = rect;
             
-            float rowHeight = button.frame.size.height + kVerticalSpaceBetweenButtons;
-            if (rowHeight > heightOfLastRow) heightOfLastRow = rowHeight;
-            
+            button.autoresizingMask = UIViewAutoresizingNone;
             [self.buttonCollectionView addSubview:button];
+            [button setNeedsDisplay];
+            
+            // Setup for next pass
+            // get the tallest of all buttons in case they are different sizes
+            CGFloat rowHeight = height + kVerticalSpaceBetweenButtons;
+            if (rowHeight > heightOfLastRow) heightOfLastRow = rowHeight;
+            currentXOrigin += width + kSpaceBetweenButtons;
         }];
+        
+        // set up for next row
+        widthOfLastRow = rowTotalSize.width;
+        currentYOrigin += heightOfLastRow;
     }];
     
-    CGFloat requiredHeight = currentYOrigin + heightOfLastRow;
-    self.buttonCollectionView.frame = CGRectMake(0, 0, contentSize.width, requiredHeight);
+    CGFloat requiredHeight = currentYOrigin;
+    self.buttonCollectionView.frame = CGRectMake(0, 0, self.buttonCollectionView.frame.size.width, requiredHeight);
     
     [self.contentView addSubview:self.buttonCollectionView];
     self.buttonCollectionView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
-//    self.buttonCollectionView.backgroundColor = [UIColor yellowColor];
-//    self.bodyLabelButton.backgroundColor = [UIColor blueColor];
-//    self.imageView.backgroundColor = [UIColor redColor];
 }
 
 -(NSMutableArray *)createSingleRowOfButtons
@@ -535,6 +556,28 @@ static MBAlertView *currentAlert;
     }
     
     return buttonGrid;
+}
+
+-(CGSize)totalSize:(NSArray *)views withSpacing:(CGSize)spacing
+{
+    float totalWidth = 0;
+    float totalHeight = 0;
+    
+    for(UIView *view in views) {
+        CGSize size = view.frame.size;
+        totalWidth += size.width + spacing.width;
+        totalHeight += size.height + spacing.height;
+    }
+    // space only between items
+    totalWidth -= spacing.width;
+    totalHeight -= spacing.height;
+    
+    return CGSizeMake(totalWidth, totalHeight);
+}
+
+-(CGSize)totalSize:(NSArray *)views
+{
+    return [self totalSize:views withSpacing:CGSizeZero];
 }
 
 
