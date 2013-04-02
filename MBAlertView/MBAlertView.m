@@ -31,6 +31,7 @@ CGFloat MBAlertViewDefaultHUDHideDelay = 0.65;
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIView *modalBackground;
 @property (nonatomic, strong) UIView *buttonCollectionView;
+@property (nonatomic, assign) BOOL viewHasLoaded;
 @end
 
 @implementation MBAlertView
@@ -329,7 +330,7 @@ static MBAlertView *currentAlert;
 -(CGSize)labelConstraint
 {
     CGSize size = self.contentView.bounds.size;
-    return CGSizeMake(size.width - 40, size.height - 100);
+    return CGSizeMake(size.width-40, size.height);
 }
 
 -(UIButton*)bodyLabelButton
@@ -340,6 +341,7 @@ static MBAlertView *currentAlert;
     CGRect content = self.contentView.bounds;
     
     CGSize size = [_bodyText sizeWithFont:self.bodyFont constrainedToSize:[self labelConstraint]];
+    
     NSString *txt = [_bodyText stringByTruncatingToSize:size withFont:self.bodyFont addQuotes:NO];
     _bodyLabelButton = [[UIButton alloc] initWithFrame:CGRectMake(content.origin.x + content.size.width/2.0 - size.width/2.0, content.origin.y + content.size.height/2.0 - size.height/2.0 - 8, size.width, size.height)];
     _bodyLabelButton.autoresizingMask = [self defaultAutoResizingMask];
@@ -350,7 +352,7 @@ static MBAlertView *currentAlert;
     _bodyLabelButton.titleLabel.font = self.bodyFont;
     _bodyLabelButton.titleLabel.numberOfLines = 0;
     _bodyLabelButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [self.view addSubview:_bodyLabelButton];
+    [_bodyLabelButton setBackgroundColor:[UIColor clearColor]];
     return _bodyLabelButton;
 }
 
@@ -376,8 +378,7 @@ static MBAlertView *currentAlert;
         
     UIColor *titleColor = [UIColor whiteColor];
     [self.bodyLabelButton setTitleColor:titleColor forState:UIControlStateNormal];
-    [_bodyLabelButton setBackgroundColor:[UIColor clearColor]];
-    [self.contentView addSubview:_bodyLabelButton];
+    [self.contentView addSubview:self.bodyLabelButton];
     
     _buttons = [[NSMutableArray alloc] init];
     [self.items enumerateObjectsUsingBlock:^(MBAlertViewItem *item, NSUInteger index, BOOL *stop)
@@ -669,13 +670,16 @@ static MBAlertView *currentAlert;
 
 - (void)setRotation:(NSNotification*)notification
 {
-    [self performSelector:@selector(layoutButtonsWrapper) withObject:nil afterDelay:0.01];
+    if (self.viewHasLoaded){
+        [self performSelector:@selector(layoutButtonsWrapper) withObject:nil afterDelay:0.01];
+    }
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self layoutView];
+    self.viewHasLoaded = YES;
 }
 
 - (void)viewDidUnload
@@ -692,6 +696,11 @@ static MBAlertView *currentAlert;
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown | UIInterfaceOrientationLandscapeLeft | UIInterfaceOrientationLandscapeRight);
 }
 
 @end

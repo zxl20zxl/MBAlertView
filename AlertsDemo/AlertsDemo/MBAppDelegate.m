@@ -8,6 +8,7 @@
 
 #import "MBAppDelegate.h"
 #import "MBHUDView.h"
+#import "RootViewController.h"
 
 @implementation MBAppDelegate
 
@@ -17,7 +18,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    UIViewController *controller = [UIViewController new];
+    UIViewController *controller = [RootViewController new];
     self.window.rootViewController = controller;
     
     [MBHUDView hudWithBody:@"Hello" type:MBAlertViewHUDTypeCheckmark hidesAfter:1.0 show:YES];
@@ -50,7 +51,7 @@
             }];
             
             [destruct addButtonWithText:@"No thank you" type:MBAlertViewItemTypeDefault block:^{
-                //[MBHUDView hudWithBody:@"Oh.\n\nOk, bye." type:MBAlertViewHUDTypeDefault hidesAfter:2.0 show:YES];
+                [MBHUDView hudWithBody:@"Ok, bye." type:MBAlertViewHUDTypeDefault hidesAfter:2.0 show:YES];
             }];
             
             [destruct addToDisplayQueue];
