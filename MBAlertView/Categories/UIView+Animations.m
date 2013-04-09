@@ -119,16 +119,17 @@
     
     for(NSDictionary *dic in views) {
         UIView *view = [dic objectForKey:@"view"];
-        
-        heightOfAllViews += view.bounds.size.height;
+        CGFloat offset = [[dic objectForKey:@"offset"] floatValue];
+        heightOfAllViews += view.bounds.size.height + offset;
     }
     
-    float yOriginOfFirstView = self.bounds.size.height/2.0 - heightOfAllViews/2.0 + self.frame.origin.y;
-    float currentYOrigin = yOriginOfFirstView;
+    CGFloat selfHeight = self.bounds.size.height;
+    CGFloat yOriginOfFirstView = selfHeight/2.0 - heightOfAllViews/2.0;
+    CGFloat currentYOrigin = yOriginOfFirstView;
     
     for(NSDictionary *dic in views) {
         UIView *view = [dic objectForKey:@"view"];
-        float offset = [[dic objectForKey:@"offset"] floatValue];
+        CGFloat offset = [[dic objectForKey:@"offset"] floatValue];
         CGRect rect = view.frame;
         rect.origin = CGPointMake(rect.origin.x, currentYOrigin + offset);
         view.frame = rect;

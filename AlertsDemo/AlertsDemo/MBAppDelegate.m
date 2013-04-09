@@ -8,6 +8,7 @@
 
 #import "MBAppDelegate.h"
 #import "MBHUDView.h"
+#import "RootViewController.h"
 
 @implementation MBAppDelegate
 
@@ -17,11 +18,15 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    UIViewController *controller = [UIViewController new];
+    UIViewController *controller = [RootViewController new];
     self.window.rootViewController = controller;
     
+    void (^goodbye)() = ^{
+        [MBHUDView hudWithBody:@"Goodbye then" type:MBAlertViewHUDTypeDefault hidesAfter:2.0 show:YES];
+    };
+    
     [MBHUDView hudWithBody:@"Hello" type:MBAlertViewHUDTypeCheckmark hidesAfter:1.0 show:YES];
-    MBAlertView *alert = [MBAlertView alertWithBody:@"Do you want to see more? (Note: you don't have a choice)" cancelTitle:nil cancelBlock:nil];
+    MBAlertView *alert = [MBAlertView alertWithBody:@"Do you want to see more? \n\n(Note: you do have a choice with multibuttons, but you should tap yes)]" cancelTitle:nil cancelBlock:nil];
     [alert addButtonWithText:@"Yes" type:MBAlertViewItemTypePositive block:^{
         [MBHUDView hudWithBody:@"Say please" type:MBAlertViewHUDTypeExclamationMark hidesAfter:1.5 show:YES];
         MBAlertView *please = [MBAlertView alertWithBody:@"Did you say please?" cancelTitle:nil cancelBlock:nil];
@@ -48,11 +53,25 @@
                     };
                 } afterDelay:2.0];
             }];
+            
+            [destruct addButtonWithText:@"No thank you" type:MBAlertViewItemTypeDefault block:^{
+                [MBHUDView hudWithBody:@"Ok, bye." type:MBAlertViewHUDTypeDefault hidesAfter:2.0 show:YES];
+            }];
+            
             [destruct addToDisplayQueue];
             
         }];
+        
+        [please addButtonWithText:@"Maybe" type:MBAlertViewItemTypeDefault block:goodbye];
+        [please addButtonWithText:@"No" type:MBAlertViewItemTypeDestructive block:goodbye];
+        
         [please addToDisplayQueue];
     }];
+    
+    [alert addButtonWithText:@"I don\'t know" type:MBAlertViewItemTypeDefault block:goodbye];
+    [alert addButtonWithText:@"Maybe" type:MBAlertViewItemTypeDefault block:goodbye];
+    [alert addButtonWithText:@"No" type:MBAlertViewItemTypeDestructive block:goodbye];
+    
     [alert addToDisplayQueue];
     return YES;
 }

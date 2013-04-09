@@ -27,6 +27,7 @@
 		04E09FB716A5D7B3008764C0 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 04E09FB616A5D7B3008764C0 /* Default.png */; };
 		04E09FB916A5D7B3008764C0 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04E09FB816A5D7B3008764C0 /* Default@2x.png */; };
 		04E09FBB16A5D7B3008764C0 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 04E09FBA16A5D7B3008764C0 /* Default-568h@2x.png */; };
+		90B8D85C170B327600A1A615 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 90B8D85B170B327600A1A615 /* RootViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +66,8 @@
 		04E09FB616A5D7B3008764C0 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		04E09FB816A5D7B3008764C0 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		04E09FBA16A5D7B3008764C0 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		90B8D85A170B327600A1A615 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		90B8D85B170B327600A1A615 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +172,8 @@
 				04E09FB416A5D7B3008764C0 /* MBAppDelegate.m */,
 				047F1BCC16A602EB008EA18D /* MBAlertView */,
 				04E09FAB16A5D7B3008764C0 /* Supporting Files */,
+				90B8D85A170B327600A1A615 /* RootViewController.h */,
+				90B8D85B170B327600A1A615 /* RootViewController.m */,
 			);
 			path = AlertsDemo;
 			sourceTree = "<group>";
@@ -266,6 +271,7 @@
 				047F1BEA16A602EB008EA18D /* MBAlertViewButton.m in Sources */,
 				047F1BEB16A602EB008EA18D /* MBCheckMarkView.m in Sources */,
 				047F1BEC16A602EB008EA18D /* MBSpinningCircle.m in Sources */,
+				90B8D85C170B327600A1A615 /* RootViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,6 +298,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -307,6 +314,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -320,6 +329,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -328,6 +338,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -339,6 +351,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlertsDemo/AlertsDemo-Prefix.pch";
 				INFOPLIST_FILE = "AlertsDemo/AlertsDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -350,6 +363,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlertsDemo/AlertsDemo-Prefix.pch";
 				INFOPLIST_FILE = "AlertsDemo/AlertsDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
