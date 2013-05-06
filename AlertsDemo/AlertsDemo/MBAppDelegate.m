@@ -2,7 +2,7 @@
 //  MBAppDelegate.m
 //  AlertsDemo
 //
-//  Created by M B. Bitar on 1/15/13.
+//  Created by Mo Bitar on 1/15/13.
 //  Copyright (c) 2013 progenius, inc. All rights reserved.
 //
 

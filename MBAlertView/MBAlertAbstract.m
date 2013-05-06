@@ -11,6 +11,7 @@
 #import "MBHUDView.h"
 #import "MBAlertViewButton.h"
 #import "UIView+Alert.h"
+#import <QuartzCore/QuartzCore.h>
 
 NSString *const MBAlertDidAppearNotification = @"MBAlertDidAppearNotification";
 NSString *const MBAlertDidDismissNotification = @"MBAlertDidDismissNotification";
