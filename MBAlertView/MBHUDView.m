@@ -2,7 +2,7 @@
 //  MBHUDView.m
 //  Notestand
 //
-//  Created by M B. Bitar on 9/30/12.
+//  Created by Mo Bitar on 9/30/12.
 //  Copyright (c) 2012 progenius, inc. All rights reserved.
 //
 
@@ -10,11 +10,10 @@
 #import "MBSpinningCircle.h"
 #import <QuartzCore/QuartzCore.h>
 #import "MBCheckmarkView.h"
-#import "UIView+Animations.h"
 #import "MBAlertViewSubclass.h"
+#import "UIView+Alert.h"
 
-@interface MBHUDView ()
-{
+@interface MBHUDView () {
     UIButton *_backgroundButton;
     MBCheckMarkView *_checkMark;
     MBSpinningCircle *_activityIndicator;
@@ -39,16 +38,14 @@
 @synthesize modalBackground = _modalBackground;
 @synthesize buttonCollectionView = _buttonCollectionView;
 
-+(MBHUDView*)hudWithBody:(NSString*)body type:(MBAlertViewHUDType)type hidesAfter:(float)delay show:(BOOL)show
-{
++ (MBHUDView*)hudWithBody:(NSString*)body type:(MBAlertViewHUDType)type hidesAfter:(float)delay show:(BOOL)show {
     MBHUDView *alert = [[MBHUDView alloc] init];
     alert.bodyText = body;
     alert.hudType = type;
     alert.hudHideDelay = delay;
     alert.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.9];
     
-    if(type == MBAlertViewHUDTypeExclamationMark)
-    {
+    if(type == MBAlertViewHUDTypeExclamationMark) {
         alert.hudType = MBAlertViewHUDTypeLabelIcon;
         alert.iconLabel.textColor = [UIColor whiteColor];
         alert.iconLabel.text = @"!";
@@ -56,20 +53,23 @@
         alert.bodyOffset = CGSizeMake(0, 0);
     }
     
-    if(show)
-        [alert addToDisplayQueue];
+    if(show) [alert addToDisplayQueue];
     return alert;
 }
 
--(CGSize)hudSize
-{
+- (void)addToWindow {
+    [super addToWindow];
+    if(self.hudHideDelay > 0)
+        self.hideTimer = [NSTimer scheduledTimerWithTimeInterval:self.hudHideDelay target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
+}
+
+- (CGSize)hudSize {
     if(CGSizeEqualToSize(self.size, CGSizeZero))
         return CGSizeMake(125, 125);
     return self.size;
 }
 
--(UILabel*)iconLabel
-{
+- (UILabel*)iconLabel {
     if(_iconLabel)
         return _iconLabel;
     _iconLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
@@ -78,8 +78,7 @@
     return _iconLabel;
 }
 
--(UIFont*)bodyFont
-{
+- (UIFont*)bodyFont {
     if(_bodyFont)
         return _bodyFont;
     float size = 0;
@@ -88,8 +87,7 @@
     return _bodyFont;
 }
 
--(UIButton*)bodyLabelButton
-{
+- (UIButton*)bodyLabelButton {
     if(_bodyLabelButton)
         return _bodyLabelButton;
     
@@ -110,9 +108,7 @@
     return _bodyLabelButton;
 }
 
-
--(UIImageView*)imageView
-{
+- (UIImageView*)imageView {
     if(_imageView)
         return _imageView;
     _imageView = [[UIImageView alloc] init];
@@ -120,18 +116,15 @@
     return _imageView;
 }
 
--(int)defaultAutoResizingMask
-{
+- (int)defaultAutoResizingMask {
     return UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 }
 
--(int)fullAutoResizingMask
-{
+- (int)fullAutoResizingMask {
     return UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin;
 }
 
--(void)loadView
-{
+- (void)loadView {
     CGRect bounds = [[UIScreen mainScreen] bounds];
     self.view = [[UIView alloc] initWithFrame:bounds];
     [self.view setBackgroundColor:[UIColor clearColor]];
@@ -142,7 +135,6 @@
     rect.origin = CGPointMake(bounds.size.width/2.0 - rect.size.width/2.0, bounds.size.height/2.0 - rect.size.height/2.0);
     
     self.contentView = [[UIView alloc] initWithFrame:rect];
-    
     
     self.modalBackground = [[UIButton alloc] initWithFrame:self.contentView.frame];
     self.modalBackground.layer.cornerRadius = 8;
@@ -157,20 +149,11 @@
     self.contentView.autoresizingMask = [self defaultAutoResizingMask];
 }
 
--(void)addToWindow
-{
-    [super addToWindow];
-    if(self.hudHideDelay > 0)
-        self.hideTimer = [NSTimer scheduledTimerWithTimeInterval:self.hudHideDelay target:self selector:@selector(dismiss) userInfo:nil repeats:NO];
-}
-
--(void)layoutView
-{
+- (void)layoutView {
     CGRect bodyRect = self.bodyLabelButton.frame;
     CGRect contentFrame = self.contentView.frame;
     
-    if(_imageView)
-    {
+    if(_imageView) {
         [_imageView sizeToFit];
         CGRect rect = self.imageView.frame;
         rect.origin = CGPointMake(contentFrame.origin.x + (contentFrame.size.width/2.0 - rect.size.width/2.0), 0);
@@ -178,8 +161,7 @@
         [self.contentView addSubview:self.imageView];
     }
     
-    else if(_hudType == MBAlertViewHUDTypeActivityIndicator)
-    {
+    else if(_hudType == MBAlertViewHUDTypeActivityIndicator) {
         _activityIndicator = [MBSpinningCircle circleWithSize:NSSpinningCircleSizeLarge color:[UIColor colorWithRed:50.0/255.0 green:155.0/255.0 blue:255.0/255.0 alpha:1.0]];
         CGRect circleRect = _activityIndicator.frame;
         circleRect.origin = CGPointMake(contentFrame.size.width/2.0 - circleRect.size.width/2.0, -5);
@@ -192,8 +174,7 @@
         [self.contentView addSubview:_activityIndicator];
     }
     
-    else if(_hudType == MBAlertViewHUDTypeCheckmark)
-    {
+    else if(_hudType == MBAlertViewHUDTypeCheckmark) {
         _checkMark = [MBCheckMarkView checkMarkWithSize:MBCheckmarkSizeLarge color:[UIColor whiteColor]];
         _checkMark.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         CGRect rect = _checkMark.frame;
@@ -210,14 +191,12 @@
         rect.origin = CGPointMake(rect.origin.x, _checkMark.frame.origin.y + _checkMark.frame.size.height);
         _bodyLabelButton.frame = rect;
     }
-    else if(_hudType == MBAlertViewHUDTypeLabelIcon || self.iconLabel.text)
-    {
+    else if(_hudType == MBAlertViewHUDTypeLabelIcon || self.iconLabel.text) {
         [self.iconLabel sizeToFit];
         CGRect rect = self.iconLabel.frame;
         rect.origin = CGPointMake(contentFrame.size.width/2.0 - rect.size.width/2.0 + self.iconOffset.width, bodyRect.origin.y - rect.size.height - 30 + self.iconOffset.height);
         self.iconLabel.frame = rect;
         [self.contentView addSubview:self.iconLabel];
-
     }
     
     CALayer *layer = _bodyLabelButton.layer;
@@ -226,11 +205,9 @@
     layer.shadowOpacity = 0.1;
     layer.shadowPath = [UIBezierPath bezierPathWithRect:_bodyLabelButton.bounds].CGPath;
     layer.shadowRadius = 10.0;
-    
 }
 
--(void)centerViewsVertically
-{
+- (void)centerViewsVertically {
     NSMutableArray *viewsToCenter = [@[] mutableCopy];
     NSMutableDictionary *primaryView = [@{
         @"offset": [NSNumber numberWithFloat:self.iconOffset.height]
@@ -268,12 +245,6 @@
     
     [self.contentView centerViewsVerticallyWithin:viewsToCenter];
 
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
 }
 
 @end

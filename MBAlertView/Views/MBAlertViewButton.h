@@ -2,7 +2,7 @@
 //  MBAlertViewButton.h
 //  Notestand
 //
-//  Created by M B. Bitar on 9/8/12.
+//  Created by Mo Bitar on 9/8/12.
 //  Copyright (c) 2012 progenius, inc. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  NSString+Trim.m
 //  AlertsDemo
 //
-//  Created by M B. Bitar on 1/15/13.
+//  Created by Mo Bitar on 1/15/13.
 //  Copyright (c) 2013 progenius, inc. All rights reserved.
 //
 
@@ -10,8 +10,7 @@
 
 @implementation NSString (Trim)
 
--(NSString*)stringByTruncatingToSize:(CGSize)size withFont:(UIFont*)font addQuotes:(BOOL)addQuotes
-{
+- (NSString*)stringByTruncatingToSize:(CGSize)size withFont:(UIFont*)font addQuotes:(BOOL)addQuotes {
     int min = 0, max = self.length, mid;
     while (min < max) {
         mid = (min+max)/2;
@@ -29,6 +28,7 @@
             break;
         }
     }
+    
     /* handle emoji */
     NSMutableString *finalString = [[self substringWithRange:[self rangeOfComposedCharacterSequencesForRange:NSMakeRange(0, min)]] mutableCopy];
     int length = addQuotes ? 4 : 3;

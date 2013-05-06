@@ -2,7 +2,7 @@
 //  NSSpinningCircle.h
 //  Notestand
 //
-//  Created by M B. Bitar on 9/11/12.
+//  Created by Mo Bitar on 9/11/12.
 //  Copyright (c) 2012 progenius, inc. All rights reserved.
 //
 
@@ -16,8 +16,8 @@ typedef enum {
 
 @interface MBSpinningCircle : UIView
 
-@property (nonatomic, assign) BOOL isAnimating;
 @property (nonatomic, strong) UIColor *color;
+@property (nonatomic, assign) BOOL isAnimating;
 @property (nonatomic, assign) BOOL hasGlow;
 @property (nonatomic, assign) float speed;
 @property (nonatomic, assign) NSSpinningCircleSize circleSize;

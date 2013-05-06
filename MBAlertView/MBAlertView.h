@@ -2,7 +2,7 @@
 //  MBAlertView.h
 //  Notestand
 //
-//  Created by M B. Bitar on 9/8/12.
+//  Created by Mo Bitar on 9/8/12.
 //  Copyright (c) 2012 progenius, inc. All rights reserved.
 //
 
@@ -26,24 +26,13 @@
 
 #import <UIKit/UIKit.h>
 #import "MBAlertViewItem.h"
-
-// notifications called when an alert/hud appears/disappears
-extern NSString *const MBAlertViewDidAppearNotification;
-extern NSString *const MBAlertViewDidDismissNotification;
+#import "MBAlertAbstract.h"
 
 // use these as needed
 extern CGFloat MBAlertViewMaxHUDDisplayTime;
 extern CGFloat MBAlertViewDefaultHUDHideDelay;
 
-@interface MBAlertView : UIViewController <UIGestureRecognizerDelegate>
-// if yes, will wait until alert has disappeared before performing any button blocks
-@property (nonatomic, assign) BOOL shouldPerformBlockAfterDismissal;
-
-// perform something after the alert dismisses
-@property (nonatomic, copy) id uponDismissalBlock;
-
-// huds by default are put on super view controller. however sometimes a hud appears right before a modal disappears. in that case we'll add the hud to the window
-@property (nonatomic, assign) BOOL addsToWindow;
+@interface MBAlertView : MBAlertAbstract <UIGestureRecognizerDelegate>
 
 // offset for HUD icons, or image offset if supplied
 @property (nonatomic, assign) CGSize iconOffset;
@@ -61,21 +50,12 @@ extern CGFloat MBAlertViewDefaultHUDHideDelay;
 // the opacity of the background
 @property (nonatomic, assign) float backgroundAlpha;
 
--(void)dismiss;
--(void)addToDisplayQueue;
--(void)addButtonWithText:(NSString*)text type:(MBAlertViewItemType)type block:(void (^)())block;
+- (void)addButtonWithText:(NSString*)text type:(MBAlertViewItemType)type block:(void (^)())block;
 
 #pragma mark Class methods
 // factory method
-+(MBAlertView*)alertWithBody:(NSString*)body cancelTitle:(NSString*)cancelTitle cancelBlock:(void (^)())cancelBlock;
-
-// yes if there is currently an alert or hud on screen
-+(BOOL)alertIsVisible;
-
-// dismisses current hud in queue, whether or not its visible
-+(void)dismissCurrentHUD;
-+(void)dismissCurrentHUDAfterDelay:(float)delay;
++ (MBAlertView*)alertWithBody:(NSString*)body cancelTitle:(NSString*)cancelTitle cancelBlock:(void (^)())cancelBlock;
 
 // a helper method that returns a size
-+(CGSize)halfScreenSize;
++ (CGSize)halfScreenSize;
 @end

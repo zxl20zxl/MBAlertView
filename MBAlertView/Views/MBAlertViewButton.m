@@ -2,7 +2,7 @@
 //  MBAlertViewButton.m
 //  Notestand
 //
-//  Created by M B. Bitar on 9/8/12.
+//  Created by Mo Bitar on 9/8/12.
 //  Copyright (c) 2012 progenius, inc. All rights reserved.
 //
 
@@ -14,8 +14,7 @@
 
 #define kShadowSize 8
 #define kButtonFont [UIFont boldSystemFontOfSize:18]
-- (id)initWithTitle:(NSString*)title
-{    
+- (id)initWithTitle:(NSString*)title {    
     self = [super initWithFrame:CGRectMake(0, 0, 100, 40)];
     if (self) {
         [self setBackgroundColor:[UIColor clearColor]];
@@ -24,8 +23,7 @@
     return self;
 }
 
--(UIColor*)colorForButtonStyle
-{
+- (UIColor*)colorForButtonStyle {
     if(_alertButtonType == MBAlertViewItemTypeDefault) {
         return [UIColor whiteColor];
     } else if(_alertButtonType == MBAlertViewItemTypeDestructive) {
@@ -37,8 +35,7 @@
     return [UIColor whiteColor];
 }
 
--(UIColor*)textColor
-{
+- (UIColor*)textColor {
     if(_alertButtonType == MBAlertViewItemTypeDefault) {
         return [UIColor colorWithWhite:0.2 alpha:1.0];
     } else if(_alertButtonType == MBAlertViewItemTypeDestructive) {
@@ -50,8 +47,7 @@
     return [UIColor whiteColor];
 }
 
-- (void)drawRect:(CGRect)rect
-{
+- (void)drawRect:(CGRect)rect {
     UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:2.0];
     [[self colorForButtonStyle] setFill];   
     [path fill];

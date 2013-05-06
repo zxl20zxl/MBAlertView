@@ -2,7 +2,7 @@
 //  AlertViewUI.h
 //  TwoTask
 //
-//  Created by M B. Bitar on 12/25/12.
+//  Created by Mo Bitar on 12/25/12.
 //  Copyright (c) 2012 progenius, inc. All rights reserved.
 //
 

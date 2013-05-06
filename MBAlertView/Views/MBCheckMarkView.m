@@ -2,7 +2,7 @@
 //  NSCheckmarkView.m
 //  Notestand
 //
-//  Created by M B. Bitar on 9/24/12.
+//  Created by Mo Bitar on 9/24/12.
 //  Copyright (c) 2012 progenius, inc. All rights reserved.
 //
 
@@ -16,8 +16,7 @@ static CGFloat xSmallSize = 8;
 
 @implementation MBCheckMarkView
 
-+(MBCheckMarkView*)checkMarkWithSize:(MBCheckmarkSize)size color:(UIColor*)color
-{
++(MBCheckMarkView*)checkMarkWithSize:(MBCheckmarkSize)size color:(UIColor*)color {
     CGSize xySize;
     switch (size) {
         case MBCheckmarkSizeLarge:
@@ -42,14 +41,11 @@ static CGFloat xSmallSize = 8;
     return checkMark;
 }
 
--(BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event
-{
+-(BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
     return NO;
 }
 
-
-UIBezierPath *CheckMarkPath(CGRect frame)
-{
+UIBezierPath *CheckMarkPath(CGRect frame) {
     float p = CGRectGetHeight(frame) / 90;
     UIBezierPath* bezierPath = [UIBezierPath bezierPath];
     [bezierPath moveToPoint: CGPointMake(0*p, 42*p)];
@@ -63,32 +59,27 @@ UIBezierPath *CheckMarkPath(CGRect frame)
     return bezierPath;
 }
 
--(void)drawLarge
-{
+-(void)drawLarge {
     UIBezierPath* bezierPath = CheckMarkPath(CGRectMake(0, 0, 0, largeSize));
     [bezierPath fill];
 }
 
--(void)drawMedium
-{
+-(void)drawMedium {
     UIBezierPath* bezierPath = CheckMarkPath(CGRectMake(0, 0, 0, mediumSize));
     [bezierPath fill];
 }
 
--(void)drawSmall
-{
+-(void)drawSmall {
     UIBezierPath* bezierPath = CheckMarkPath(CGRectMake(0, 0, 0, smallSize));
     [bezierPath fill];
 }
 
--(void)drawVerySmall
-{
+-(void)drawVerySmall {
     UIBezierPath* bezierPath = CheckMarkPath(CGRectMake(0, 0, 0, xSmallSize));
     [bezierPath fill];
 }
 
-- (void)drawRect:(CGRect)rect
-{
+- (void)drawRect:(CGRect)rect {
     [_color setFill];
     if(_size == MBCheckmarkSizeVerySmall)
         [self drawVerySmall];

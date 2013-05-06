@@ -2,23 +2,20 @@
 //  NSSpinningCircle.m
 //  Notestand
 //
-//  Created by M B. Bitar on 9/11/12.
+//  Created by Mo Bitar on 9/11/12.
 //  Copyright (c) 2012 progenius, inc. All rights reserved.
 //
 
 #import "MBSpinningCircle.h"
 #import <QuartzCore/QuartzCore.h>
 
-@implementation MBSpinningCircle
-{
+@implementation MBSpinningCircle {
     float progress;
 }
 
-+(MBSpinningCircle*)circleWithSize:(NSSpinningCircleSize)size color:(UIColor*)color
-{
++ (MBSpinningCircle*)circleWithSize:(NSSpinningCircleSize)size color:(UIColor*)color {
     float width;
-    switch (size)
-    {
+    switch (size) {
         case NSSpinningCircleSizeDefault:
             width = 40;
             break;
@@ -35,42 +32,34 @@
     return circle;
 }
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
-    if (self)
-    {
+    if (self) {
         self.opaque = NO;
         self.autoresizingMask =  UIViewAutoresizingFlexibleLeftMargin;
     }
     return self;
 }
 
--(BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
-    for (UIView *view in self.subviews)
-    {
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+    for (UIView *view in self.subviews) {
         if ([view pointInside:[self convertPoint:point toView:view] withEvent:event])
             return YES;
     }
     return NO;
 }
 
--(void)setIsAnimating:(BOOL)animating
-{
+- (void)setIsAnimating:(BOOL)animating {
     _isAnimating = animating;
-    if(animating)
-    {
+    if(animating) {
         [UIView animateWithDuration:0.9 animations:^{ self.alpha = 1.0; }];
         [self addRotationAnimation];
-    }
-    else
-    {
+    } else {
         [self hide];
     }
 }
 
--(void)hide
-{
+- (void)hide {
     [UIView animateWithDuration:0.45 animations:^{
         self.alpha = 0.0;
     } completion:^(BOOL fin) {
@@ -78,21 +67,7 @@
     }];
 }
 
--(CGGradientRef)gradient
-{
-    
-    UIColor *sideColor = [UIColor redColor];
-    UIColor *midColor = [UIColor lightGrayColor];
-    NSArray* gradientColors = @[(id)sideColor.CGColor,
-                               (id)midColor.CGColor,
-                               (id)sideColor.CGColor];
-    CGFloat gradientLocations[] = {0, 0.5, 1};
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    return CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)gradientColors, gradientLocations);
-}
-
--(void)drawAnnular
-{
+- (void)drawAnnular {
     progress += 0.05;
     if(progress > M_PI) progress = 0;
     CGFloat lineWidth = 3.25f;
@@ -126,8 +101,7 @@
         [self addRotationAnimation];
 }
 
--(void)addRotationAnimation
-{
+- (void)addRotationAnimation {
     CABasicAnimation *rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
     rotationAnimation.toValue = [NSNumber numberWithFloat: M_PI];
     rotationAnimation.duration = _speed;
@@ -136,8 +110,7 @@
     [self.layer addAnimation:rotationAnimation forKey:@"rotationAnimation1"];
 }
 
--(void)drawRect:(CGRect)rect
-{
+- (void)drawRect:(CGRect)rect {
     [self drawAnnular];
 }
 
