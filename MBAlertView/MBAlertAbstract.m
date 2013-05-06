@@ -3,7 +3,7 @@
 //  Freebie
 //
 //  Created by Mo Bitar on 5/2/13.
-//  Copyright (c) 2013 Ora Interactive. All rights reserved.
+//  Copyright (c) 2013 progenius. All rights reserved.
 //
 
 #import "MBAlertAbstract.h"
