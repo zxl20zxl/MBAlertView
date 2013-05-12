@@ -162,7 +162,7 @@
     }
     
     else if(_hudType == MBAlertViewHUDTypeActivityIndicator) {
-        _activityIndicator = [MBSpinningCircle circleWithSize:NSSpinningCircleSizeLarge color:[UIColor colorWithRed:50.0/255.0 green:155.0/255.0 blue:255.0/255.0 alpha:1.0]];
+        _activityIndicator = [MBSpinningCircle circleWithSize:NSSpinningCircleSizeLarge color:self.itemColor];
         CGRect circleRect = _activityIndicator.frame;
         circleRect.origin = CGPointMake(contentFrame.size.width/2.0 - circleRect.size.width/2.0, -5);
         _activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
@@ -170,12 +170,13 @@
         _activityIndicator.circleSize = NSSpinningCircleSizeLarge;
         _activityIndicator.hasGlow = YES;
         _activityIndicator.isAnimating = YES;
+        _activityIndicator.color = self.itemColor;
         _activityIndicator.speed = 0.55;
         [self.contentView addSubview:_activityIndicator];
     }
     
     else if(_hudType == MBAlertViewHUDTypeCheckmark) {
-        _checkMark = [MBCheckMarkView checkMarkWithSize:MBCheckmarkSizeLarge color:[UIColor whiteColor]];
+        _checkMark = [MBCheckMarkView checkMarkWithSize:MBCheckmarkSizeLarge color:self.itemColor ?: [UIColor whiteColor]];
         _checkMark.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         CGRect rect = _checkMark.frame;
         rect.origin = CGPointMake(contentFrame.size.width/2.0 - rect.size.width/2.0, 50);

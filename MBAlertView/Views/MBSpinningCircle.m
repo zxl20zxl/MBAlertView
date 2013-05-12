@@ -67,6 +67,16 @@
     }];
 }
 
+#define blueColor [UIColor colorWithRed:50.0/255.0 green:155.0/255.0 blue:255.0/255.0 alpha:1.0]
+
+- (void)setColor:(UIColor *)color {
+    if(!_color) {
+        _color = blueColor;
+    } else {
+        _color = color;
+    }
+}
+
 - (void)drawAnnular {
     progress += 0.05;
     if(progress > M_PI) progress = 0;

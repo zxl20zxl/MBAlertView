@@ -24,6 +24,7 @@ typedef enum {
 @property (nonatomic, assign) CGSize bodyOffset;
 @property (nonatomic, strong) UILabel *iconLabel;
 @property (nonatomic, strong) UIColor *backgroundColor;
+@property (nonatomic, strong) UIColor *itemColor;
 
 // if you want to customize the HUD before showing, set show to NO, else setting to YES displays it right away
 + (MBHUDView*)hudWithBody:(NSString*)body type:(MBAlertViewHUDType)type hidesAfter:(float)delay show:(BOOL)show;
