@@ -36,5 +36,8 @@ MBAlertView *alert = [MBAlertView alertWithBody:@"Are you sure you want to delet
 
 You can see more in the easy to follow demo.
 
+##Contact
+[Bitar](http://www.bitar.io/paragraphs/) [@bitario](https://twitter.com/bitario)
+
 ## License
 MBAlertView is available under the MIT license.
