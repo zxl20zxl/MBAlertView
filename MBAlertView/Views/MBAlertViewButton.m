@@ -8,7 +8,6 @@
 
 #import "MBAlertViewButton.h"
 #import <QuartzCore/QuartzCore.h>
-#import "AlertViewUI.h"
 
 @implementation MBAlertViewButton
 
@@ -29,7 +28,7 @@
     } else if(_alertButtonType == MBAlertViewItemTypeDestructive) {
         return [UIColor redColor];
     } else if(_alertButtonType == MBAlertViewItemTypePositive) {
-        return BLUE_GLOW_COLOR;
+        return [UIColor colorWithRed:50.0/255.0 green:155.0/255.0 blue:255.0/255.0 alpha:1.0];
     }
     
     return [UIColor whiteColor];

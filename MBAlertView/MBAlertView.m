@@ -164,7 +164,7 @@ CGFloat MBAlertViewDefaultHUDHideDelay = 0.65;
     }
     
     [self.modalBackground setBackgroundColor:[UIColor blackColor]];
-    self.modalBackground.alpha = _backgroundAlpha > 0 ? _backgroundAlpha : 0.85;
+    self.modalBackground.alpha = _backgroundAlpha > 0 ? _backgroundAlpha : 0.0;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOutsideOfButtons:)];
     [tap setCancelsTouchesInView:NO];

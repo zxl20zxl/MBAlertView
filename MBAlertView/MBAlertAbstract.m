@@ -11,7 +11,6 @@
 #import "MBHUDView.h"
 #import "MBAlertViewButton.h"
 #import "UIView+Alert.h"
-#import <QuartzCore/QuartzCore.h>
 
 NSString *const MBAlertDidAppearNotification = @"MBAlertDidAppearNotification";
 NSString *const MBAlertDidDismissNotification = @"MBAlertDidDismissNotification";
@@ -73,8 +72,14 @@ static MBAlertAbstract *currentAlert;
     
     [window resignFirstRespondersForSubviews];
     
-    [self addBounceAnimationToLayer:self.view.layer];
-    [displayQueue removeObject:self]; 
+    [self addPresentAnimation];
+    
+    [displayQueue removeObject:self];
+}
+
+- (void)addPresentAnimation {
+    
+    [self addAnimationToLayer:self.view.layer];
 }
 
 - (void)performLayout {
@@ -94,6 +99,7 @@ static MBAlertAbstract *currentAlert;
     [dismissQueue removeObject:self];
     
     currentAlert = nil;
+    
     [self addDismissAnimation];
 }
 
@@ -161,7 +167,8 @@ static MBAlertAbstract *currentAlert;
 
 #pragma mark - Animations
 
-- (void)hideWithFade {
+- (void)hideWithFade
+{
     self.view.alpha = 0.0;
     [self addFadingAnimationWithDuration:[self isMemberOfClass:[MBHUDView class]] ? 0.25 : 0.20];
     [self performSelector:@selector(removeAlertFromView) withObject:nil afterDelay:kDismissDuration];
@@ -169,19 +176,62 @@ static MBAlertAbstract *currentAlert;
 
 #define transform(x, y, z) [NSValue valueWithCATransform3D:CATransform3DMakeScale(x, y, z)]
 
-- (void)addDismissAnimation {
-    NSArray *frameValues = @[transform(1.0, 1.0, 1), transform(0.95, 0.95, 1), transform(1.15, 1.15, 1), transform(0.01, 0.01, 1.0)];
-    NSArray *frameTimes = @[@(0.0), @(0.1), @(0.5), @(1.0)];
-    CAKeyframeAnimation *animation = [self.class animationWithValues:frameValues times:frameTimes duration:kDismissDuration];
-    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
-    [self.view.layer addAnimation:animation forKey:@"popup"];
+- (void)addDismissAnimation
+{
+    [self.view.layer addAnimation:[self dismissAnimationForType:self.animationType] forKey:@"popup"];
     [self performSelector:@selector(hideWithFade) withObject:nil afterDelay:0.15];
 }
 
-- (void)addBounceAnimationToLayer:(CALayer*)layer {
+CAAnimation *fadeAnimation()
+{
+    CABasicAnimation *basicAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    basicAnimation.fromValue = @(1.0);
+    basicAnimation.toValue = @(0.0);
+    basicAnimation.duration = 0.;
+    return basicAnimation;
+}
+
+CAAnimation *bounceAnimation() {
     NSArray *frameValues = @[transform(0.1, 0.1, 0.1), transform(1.15, 1.15, 1.15), transform(0.9, 0.9, 0.9), transform(1.0, 1.0, 1.0)];
     NSArray *frameTimes = @[@(0.0), @(0.5), @(0.9), @(1.0)];
-    [layer addAnimation:[self.class animationWithValues:frameValues times:frameTimes duration:0.4] forKey:@"popup"];
+    return [MBAlertAbstract animationWithValues:frameValues times:frameTimes duration:0.4];
+}
+
+CAAnimation *bounceDismissAnimation()
+{
+    NSArray *frameValues = @[transform(1.0, 1.0, 1), transform(0.95, 0.95, 1), transform(1.15, 1.15, 1), transform(0.01, 0.01, 1.0)];
+    NSArray *frameTimes = @[@(0.0), @(0.1), @(0.5), @(1.0)];
+    CAKeyframeAnimation *animation = [MBAlertAbstract animationWithValues:frameValues times:frameTimes duration:kDismissDuration];
+    animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+    return animation;
+}
+
+CAAnimation *smoothPresentAnimation() {
+    NSArray *frameValues = @[transform(1.1, 1.1, 1.1), transform(1.0, 1.0, 1.0)];
+    NSArray *frameTimes = @[@(0.0), @(1.0)];
+    return [MBAlertAbstract animationWithValues:frameValues times:frameTimes duration:0.3];
+}
+
+CAAnimation *smoothDismissAnimation() {
+    NSArray *frameValues = @[transform(1.0, 1.0, 1.0), transform(0.0, 0.0, 0.0)];
+    NSArray *frameTimes = @[@(0.0), @(1.0)];
+    return [MBAlertAbstract animationWithValues:frameValues times:frameTimes duration:0.25];
+}
+
+- (CAAnimation*)presentAnimationForType:(MBAlertAnimationType)type {
+    if(type == MBAlertAnimationTypeBounce)
+        return bounceAnimation();
+    else return smoothPresentAnimation();
+}
+
+- (CAAnimation*)dismissAnimationForType:(MBAlertAnimationType)type {
+    if(type == MBAlertAnimationTypeBounce)
+        return bounceDismissAnimation();
+    else return smoothDismissAnimation();
+}
+
+- (void)addAnimationToLayer:(CALayer*)layer {
+    [layer addAnimation:[self presentAnimationForType:self.animationType] forKey:@"popup"];
 }
 
 - (void)didSelectBodyLabel:(UIButton*)bodyLabelButton {

@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    MBAlertAnimationTypeSmooth,
+    MBAlertAnimationTypeBounce
+} MBAlertAnimationType;
+
 // notifications called when an alert/hud appears/disappears
 extern NSString *const MBAlertDidAppearNotification;
 extern NSString *const MBAlertDidDismissNotification;
@@ -23,6 +28,8 @@ extern NSString *const MBAlertDidDismissNotification;
 @property (nonatomic, assign) BOOL shouldPerformBlockAfterDismissal;
 
 @property (nonatomic, strong) NSTimer *hideTimer;
+
+@property (nonatomic) MBAlertAnimationType animationType;
 
 - (void)dismiss;
 - (void)addToDisplayQueue;

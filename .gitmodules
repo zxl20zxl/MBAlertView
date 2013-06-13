@@ -1,0 +1,3 @@
+[submodule "AutolayoutHelpers"]
+	path = AutolayoutHelpers
+	url = https://github.com/mobitar/AutolayoutHelpers.git
