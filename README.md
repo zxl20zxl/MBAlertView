@@ -25,6 +25,15 @@ MBAlertView is a fast and simple block-based alert and HUD library for iOS, as s
 	<li>Doesn't use any PNG files. Everything is drawn with code.</li>
 </ul>
 
+##Installation
+
+After cloning, run
+
+`git submodule init`
+
+`git submodule update`
+
+
 ## Usage
 
 There are two factory methods to get you started:
