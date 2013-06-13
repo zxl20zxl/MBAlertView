@@ -1,7 +1,9 @@
  MBAlertView
 ===================
 
-MBAlertView is a fast block-based alert and HUD library with a dead simple API. As seen in [Noteclub.](https://itunes.apple.com/us/app/noteclub/id647643196?mt=8) Download it won't you?
+MBAlertView is a fast block-based alert and HUD library with a dead simple API. 
+
+As seen in [Noteclub.](https://itunes.apple.com/us/app/noteclub/id647643196?mt=8) Download it won't you?
 
 ###MBAlertView now comes in two styles. 
 
@@ -67,7 +69,9 @@ MBAlertView *alert = [MBAlertView alertWithBody:@"Are you sure you want to delet
 
 You can see more in the easy to follow demo. (That's currently broken)
 
-####Follow me on Twitter so that I feel like I'm doing something with my life.
+##Other
+Follow me on Twitter so that I feel like I'm doing something with my life.
+
 [Bitar](http://www.bitar.io/paragraphs/) [@bitario](https://twitter.com/bitario)
 
 ## License
