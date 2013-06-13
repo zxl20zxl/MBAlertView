@@ -1,7 +1,7 @@
  MBAlertView
 ===================
 
-MBAlertView is a fast and simple block-based alert and HUD library for iOS, as seen in [Noteclub.](https://itunes.apple.com/us/app/noteclub/id647643196?mt=8)
+MBAlertView is a fast block-based alert and HUD library with a dead simple API. As seen in [Noteclub.](https://itunes.apple.com/us/app/noteclub/id647643196?mt=8) Download it won't you?
 
 ###MBAlertView now comes in two styles. 
 
@@ -40,7 +40,7 @@ There are two factory methods to get you started:
 
 ### Alerts
 
-There are now two alert style, Classic and Flat. Flat is the iOS 7 style.
+There are now two alert styles, Classic and Flat. Flat is the iOS 7 style.
 
 To create a flat alert:
 
@@ -65,10 +65,10 @@ MBAlertView *alert = [MBAlertView alertWithBody:@"Are you sure you want to delet
 [MBHUDView hudWithBody:@"Wait." type:MBAlertViewHUDTypeActivityIndicator hidesAfter:4.0 show:YES];
 ```
 
-You can see more in the easy to follow demo.
+You can see more in the easy to follow demo. (That's currently broken)
 
-##Contact
+####Follow me on Twitter so that I feel like I'm doing something with my life.
 [Bitar](http://www.bitar.io/paragraphs/) [@bitario](https://twitter.com/bitario)
 
 ## License
-MBAlertView is available under the MIT license.
+MBAlertView is available under the MIT license. (Whatever the hell that means)
