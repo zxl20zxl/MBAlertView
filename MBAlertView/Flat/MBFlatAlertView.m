@@ -145,6 +145,7 @@ static const CGFloat buttonHeight = 40;
     detailsLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:12];
     detailsLabel.backgroundColor = [UIColor clearColor];
     detailsLabel.numberOfLines = 0;
+    detailsLabel.textAlignment = NSTextAlignmentCenter;
     detailsLabel.preferredMaxLayoutWidth = self.view.bounds.size.width - 40;
 }
 
