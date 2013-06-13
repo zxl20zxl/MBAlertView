@@ -145,7 +145,7 @@ static const CGFloat buttonHeight = 40;
     detailsLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:12];
     detailsLabel.backgroundColor = [UIColor clearColor];
     detailsLabel.numberOfLines = 0;
-    detailsLabel.preferredMaxLayoutWidth = self.view.bounds.size.width;
+    detailsLabel.preferredMaxLayoutWidth = self.view.bounds.size.width - 40;
 }
 
 #pragma mark - Buttons
@@ -205,7 +205,7 @@ static const CGFloat buttonHeight = 40;
         containerView.alpha = 0.0;
     }];
     
-    [containerView.layer addAnimation:smoothDismissAnimation() forKey:@"anim"];
+    [containerView.layer addAnimation:flatDismissAnimation() forKey:@"anim"];
     
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -215,11 +215,11 @@ static const CGFloat buttonHeight = 40;
 
 #define scale(x, y, z) [NSValue valueWithCATransform3D:CATransform3DMakeScale(x, y, z)]
 
-static CAAnimation *smoothDismissAnimation() {
+CAAnimation *flatDismissAnimation() {
     NSArray *frameValues = @[scale(1.0, 1.0, 1.0), scale(0.7, 0.7, 0.7)];
     NSArray *frameTimes = @[@(0.0), @(1.0)];
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
-    animation.duration = 0.15;
+    animation.duration = 0.20;
     animation.keyTimes = frameTimes;
     animation.values = frameValues;
     animation.fillMode = kCAFillModeForwards;

@@ -13,4 +13,5 @@
 
 + (instancetype)alertWithTitle:(NSString*)title detailText:(NSString*)detailText cancelTitle:(NSString*)cancelTitle cancelBlock:(MBFlatAlertButtonAction)cancelBlock;
 
+CAAnimation *flatDismissAnimation();
 @end
