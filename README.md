@@ -7,7 +7,7 @@ MBAlertView is a fast and simple block-based alert and HUD library for iOS, as s
 
 ####Flat
 
-[![](http://i.imgur.com/oaZkvrD.png)](http://i.imgur.com/oaZkvrD.png)
+[![](http://i.imgur.com/oKrzrY1.png)](http://i.imgur.com/oKrzrY1.png)
 
 ####Classic
 
@@ -49,6 +49,8 @@ MBFlatAlertView *alert = [MBFlatAlertView alertWithTitle:@"Special Instructions"
 [alert addButtonWithTitle:@"Hello" type:MBFlatAlertButtonTypeBold action:^{}];
 [alert addToDisplayQueue];
 ```
+
+#####Note: MBFlatAlertView is auto-layout based.
 
 To create a classic alert:
 
