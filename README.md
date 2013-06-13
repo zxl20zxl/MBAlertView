@@ -1,7 +1,15 @@
  MBAlertView
 ===================
 
-MBAlertView is a fun and simple block-based alert and HUD library for iOS, as seen in [Notestand.](https://itunes.apple.com/us/app/notestand-notes-discussions/id586976282?mt=8)
+MBAlertView is a fast and simple block-based alert and HUD library for iOS, as seen in [Noteclub.](https://itunes.apple.com/us/app/noteclub/id647643196?mt=8)
+
+###MBAlertView now comes in two styles. 
+
+####Flat
+
+[![](http://i.imgur.com/oaZkvrD.png)](http://i.imgur.com/oaZkvrD.png)
+
+####Classic
 
 [![](http://i.imgur.com/3s3eJ.png)](http://i.imgur.com/3s3eJ.png)
 [![](http://i.imgur.com/7CbbT.png)](http://i.imgur.com/7CbbT.png) 
@@ -22,6 +30,18 @@ MBAlertView is a fun and simple block-based alert and HUD library for iOS, as se
 There are two factory methods to get you started:
 
 ### Alerts
+
+There are now two alert style, Classic and Flat. Flat is the iOS 7 style.
+
+To create a flat alert:
+
+``` objective-c
+MBFlatAlertView *alert = [MBFlatAlertView alertWithTitle:@"Special Instructions" detailText:@"Are you sure?" cancelTitle:@"Cancel" cancelBlock:nil];
+[alert addButtonWithTitle:@"Hello" type:MBFlatAlertButtonTypeBold action:^{}];
+[alert addToDisplayQueue];
+```
+
+To create a classic alert:
 
 ``` objective-c
 MBAlertView *alert = [MBAlertView alertWithBody:@"Are you sure you want to delete this note? You cannot undo this." cancelTitle:@"Cancel" cancelBlock:nil];
