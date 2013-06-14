@@ -7,7 +7,9 @@
 @interface MBFlatAlertView : MBAlertAbstract
 @property (nonatomic, copy) NSString *alertTitle;
 @property (nonatomic, copy) NSString *detailText;
-@property (nonatomic) UIView *contentView;
+@property (nonatomic, readonly) UIView *contentView;
+@property (nonatomic) CGFloat contentViewHeight;
+@property (nonatomic) BOOL isRounded;
 
 - (void)addButtonWithTitle:(NSString*)title type:(MBFlatAlertButtonType)type action:(MBFlatAlertButtonAction)action;
 
