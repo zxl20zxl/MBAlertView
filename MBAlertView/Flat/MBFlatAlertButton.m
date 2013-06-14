@@ -17,6 +17,45 @@
     else return [UIFont fontWithName:@"HelveticaNeue-Medium" size:14];;
 }
 
+- (UILabel*)textLabel
+{
+    if(!_textLabel) {
+        _textLabel = [UILabel newForAutolayoutAndAddToView:self];
+        _textLabel.numberOfLines = 0;
+        _textLabel.textColor = [UIColor colorWithRed:0.000 green:0.471 blue:0.965 alpha:1];
+        _textLabel.font = [self textFont];
+        _textLabel.textAlignment = NSTextAlignmentCenter;
+        _textLabel.backgroundColor = [UIColor clearColor];
+    }
+    return _textLabel;
+}
+
+- (void)layoutSubviews
+{
+    self.contentMode = UIViewContentModeRedraw;
+
+    [super layoutSubviews];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self configureTextLabel];
+        [self.superview addConstraint:constraintHeight(self, _textLabel, 20)];
+    });
+}
+
+- (void)configureTextLabel
+{
+    CGFloat const padding = 10;
+    self.textLabel.text = self.title;
+    [self addConstraints:@[
+         constraintCenterX(_textLabel, self),
+         constraintCenterY(_textLabel, self),
+         constraintWidth(_textLabel, self, -padding * 2)
+     ]];
+//    [_textLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    _textLabel.preferredMaxLayoutWidth = self.bounds.size.width - padding * 2;
+    
+}
+
 - (void)setHighlighted:(BOOL)highlighted
 {
     [super setHighlighted:highlighted];
@@ -29,23 +68,26 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextFillRect(context, rect);
     
-    UIFont *font = [self textFont];
-    CGSize size = [_title sizeWithFont:font];
-    [[UIColor colorWithRed:0.000 green:0.471 blue:0.965 alpha:1] set];
-    [_title drawInRect:CGRectMake(rect.size.width/2.0 - size.width/2.0, rect.size.height/2.0 - size.height/2.0, size.width, size.height) withFont:font];
-    
     CGFloat const strokeSize = 0.75;
+
     // draw top stroke
-    UIBezierPath *top = [UIBezierPath bezierPathWithRect:CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, strokeSize)];
-    [[UIColor colorWithRed:0.757 green:0.773 blue:0.776 alpha:1] setFill];
-    [top fill];
+    [self drawStrokeForRect:CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, strokeSize)];
     
     if(_hasRightStroke) {
-    // draw right stroke
-        UIBezierPath *right = [UIBezierPath bezierPathWithRect:CGRectMake(rect.origin.x + rect.size.width - strokeSize, rect.origin.y, strokeSize, rect.size.height)];
-        [[UIColor colorWithRed:0.757 green:0.773 blue:0.776 alpha:1] setFill];
-        [right fill];
+        [self drawStrokeForRect:CGRectMake(rect.origin.x + rect.size.width - strokeSize, rect.origin.y, strokeSize, rect.size.height)];
     }
+    
+    if(_hasBottomStroke) {
+        [self drawStrokeForRect:CGRectMake(rect.origin.x, rect.origin.y + rect.size.height - strokeSize, rect.size.width, strokeSize)];
+    }
+}
+
+- (void)drawStrokeForRect:(CGRect)rect
+{
+    UIBezierPath *path = [UIBezierPath bezierPathWithRect:rect];
+    [[UIColor colorWithRed:0.757 green:0.773 blue:0.776 alpha:1] setFill];
+    [path fill];
+    
 }
 
 @end

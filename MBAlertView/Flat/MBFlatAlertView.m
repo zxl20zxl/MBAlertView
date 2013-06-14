@@ -11,6 +11,7 @@
     UIView *containerBackground;
     NSMutableArray *buttons;
     UIView *verticallyCenteredContainer;
+    UIView *buttonsView;
 }
 
 @end
@@ -34,6 +35,7 @@
     [self configureContainerView];
     [self configureLabels];
     [self configureContentView];
+    [self configureButtonsView];
     [self configureConstraints];
     [self layoutButtons];
 }
@@ -112,7 +114,8 @@ static const CGFloat buttonHeight = 40;
         constraintCenterX(containerView, self.view),
         constraintWidth(containerView, self.view, -40),
         constraintTop(containerView, titleLabel, -16),
-        constraintBottom(containerView, _contentView ?: detailsLabel, buttonHeight + (_contentView ? 0 : 15))
+//        constraintBottom(containerView, _contentView ?: detailsLabel, buttonHeight + (_contentView ? 0 : 15))
+        constraintBottom(containerView, buttonsView, 0)
      ]];
     
     [self.view addConstraints:constraintsEqualSizeAndPosition(containerBackground, containerView)];
@@ -159,6 +162,17 @@ static const CGFloat buttonHeight = 40;
 
 #pragma mark - Buttons
 
+- (void)configureButtonsView
+{
+    buttonsView = [UIView newForAutolayoutAndAddToView:containerView];
+    [self.view addConstraints:@[
+         constraintWidth(buttonsView, containerView, 0),
+        constraintEqualAttributes(buttonsView, _contentView ?: detailsLabel, NSLayoutAttributeTop, NSLayoutAttributeBottom, 0),
+         constraintCenterX(buttonsView, containerView),
+         constraintHeight(buttonsView, nil, 75)
+     ]];
+}
+
 - (void)addButtonWithTitle:(NSString*)title type:(MBFlatAlertButtonType)type action:(MBFlatAlertButtonAction)action
 {
     MBFlatAlertButton *button = [MBFlatAlertButton new];
@@ -174,19 +188,18 @@ static const CGFloat buttonHeight = 40;
 }
 
 - (void)layoutButtons
-{
+{    
     [buttons enumerateObjectsUsingBlock:^(MBFlatAlertButton *button, NSUInteger idx, BOOL *stop) {
         if(!button.superview)
-            [containerView addSubview:button];
-        [self.view addConstraint:constraintEqualWithMultiplier(button, containerView, NSLayoutAttributeWidth, 0, 1.0/buttons.count)];
-        [self.view addConstraint:constraintHeight(button, nil, buttonHeight)];
-        [self.view addConstraint:constraintBottom(button, containerView, 0)];
+            [buttonsView addSubview:button];
+        [self.view addConstraint:constraintEqualWithMultiplier(button, buttonsView, NSLayoutAttributeWidth, 0, 1.0/buttons.count)];
+        [self.view addConstraint:constraintBottom(button, buttonsView, 0)];
         
         if(idx > 0) {
             MBFlatAlertButton *previousButton = buttons[idx - 1];
             [self.view addConstraint:constraintEqualAttributes(button, previousButton, NSLayoutAttributeLeft, NSLayoutAttributeRight, 0)];
         } else {
-            [self.view addConstraint:constraintLeft(button, containerView, 0)];
+            [self.view addConstraint:constraintLeft(button, buttonsView, 0)];
         }
         
         if(idx != buttons.count - 1)
@@ -243,6 +256,7 @@ CAAnimation *flatDismissAnimation()
 {
     MBFlatAlertView *alert = [MBFlatAlertView new];
     alert.alertTitle = title;
+    alert.isRounded = YES;
     alert.detailText = detailText;
     [alert addButtonWithTitle:cancelTitle type:MBFlatAlertButtonTypeBold action:cancelBlock];
     return alert;
