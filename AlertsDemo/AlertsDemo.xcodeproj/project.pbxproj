@@ -24,7 +24,6 @@
 		04BCBD85176D7F77003EB9AD /* AutoLayoutHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 04BCBD81176D7F77003EB9AD /* AutoLayoutHelpers.m */; };
 		04BCBD86176D7F77003EB9AD /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 04BCBD82176D7F77003EB9AD /* README.md */; };
 		04BCBD87176D7F77003EB9AD /* UIView+Autolayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 04BCBD84176D7F77003EB9AD /* UIView+Autolayout.m */; };
-		04BCBD89176D8001003EB9AD /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04BCBD88176D8001003EB9AD /* Accelerate.framework */; };
 		04E09FA516A5D7B3008764C0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E09FA416A5D7B3008764C0 /* UIKit.framework */; };
 		04E09FA716A5D7B3008764C0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E09FA616A5D7B3008764C0 /* Foundation.framework */; };
 		04E09FA916A5D7B3008764C0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E09FA816A5D7B3008764C0 /* CoreGraphics.framework */; };
@@ -70,7 +69,6 @@
 		04BCBD82176D7F77003EB9AD /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		04BCBD83176D7F77003EB9AD /* UIView+Autolayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Autolayout.h"; sourceTree = "<group>"; };
 		04BCBD84176D7F77003EB9AD /* UIView+Autolayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Autolayout.m"; sourceTree = "<group>"; };
-		04BCBD88176D8001003EB9AD /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		04E09FA016A5D7B3008764C0 /* AlertsDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlertsDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04E09FA416A5D7B3008764C0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		04E09FA616A5D7B3008764C0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -93,7 +91,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04BCBD89176D8001003EB9AD /* Accelerate.framework in Frameworks */,
 				047F1BC016A5DC81008EA18D /* QuartzCore.framework in Frameworks */,
 				04E09FA516A5D7B3008764C0 /* UIKit.framework in Frameworks */,
 				04E09FA716A5D7B3008764C0 /* Foundation.framework in Frameworks */,
@@ -211,7 +208,6 @@
 		04E09FA316A5D7B3008764C0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				04BCBD88176D8001003EB9AD /* Accelerate.framework */,
 				047F1BBF16A5DC81008EA18D /* QuartzCore.framework */,
 				04E09FA416A5D7B3008764C0 /* UIKit.framework */,
 				04E09FA616A5D7B3008764C0 /* Foundation.framework */,

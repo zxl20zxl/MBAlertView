@@ -2,7 +2,6 @@
 #import "MBFlatAlertView.h"
 #import "AutoLayoutHelpers.h"
 #import "UIView+Autolayout.h"
-#import <Accelerate/Accelerate.h>
 
 @interface MBFlatAlertView ()
 {
@@ -266,85 +265,8 @@ CAAnimation *flatDismissAnimation()
 
 #pragma mark - Blur Configuration
 
--(UIImage *)boxblurImage:(UIImage *)image boxSize:(int)boxSize {
-    //Get CGImage from UIImage
-    CGImageRef img = image.CGImage;
-    
-    //setup variables
-    vImage_Buffer inBuffer, outBuffer;
-    
-    vImage_Error error;
-    
-    void *pixelBuffer;
-    
-    //create vImage_Buffer with data from CGImageRef
-    
-    //These two lines get get the data from the CGImage
-    CGDataProviderRef inProvider = CGImageGetDataProvider(img);
-    CFDataRef inBitmapData = CGDataProviderCopyData(inProvider);
-    
-    //The next three lines set up the inBuffer object based on the attributes of the CGImage
-    inBuffer.width = CGImageGetWidth(img);
-    inBuffer.height = CGImageGetHeight(img);
-    inBuffer.rowBytes = CGImageGetBytesPerRow(img);
-    
-    //This sets the pointer to the data for the inBuffer object
-    inBuffer.data = (void*)CFDataGetBytePtr(inBitmapData);
-    
-    //create vImage_Buffer for output
-    
-    //allocate a buffer for the output image and check if it exists in the next three lines
-    pixelBuffer = malloc(CGImageGetBytesPerRow(img) * CGImageGetHeight(img));
-    
-    if(pixelBuffer == NULL)
-        NSLog(@"No pixelbuffer");
-    
-    //set up the output buffer object based on the same dimensions as the input image
-    outBuffer.data = pixelBuffer;
-    outBuffer.width = CGImageGetWidth(img);
-    outBuffer.height = CGImageGetHeight(img);
-    outBuffer.rowBytes = CGImageGetBytesPerRow(img);
-    
-    //perform convolution - this is the call for our type of data
-    error = vImageBoxConvolve_ARGB8888(&inBuffer, &outBuffer, NULL, 0, 0, boxSize, boxSize, NULL, kvImageEdgeExtend);
-    
-    //check for an error in the call to perform the convolution
-    if (error) {
-        NSLog(@"error from convolution %ld", error);
-    }
-    
-    //create CGImageRef from vImage_Buffer output
-    //1 - CGBitmapContextCreateImage -
-    
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    
-    CGContextRef ctx = CGBitmapContextCreate(outBuffer.data,
-                                             outBuffer.width,
-                                             outBuffer.height,
-                                             8,
-                                             outBuffer.rowBytes,
-                                             colorSpace,
-                                             kCGImageAlphaNoneSkipLast);
-    CGImageRef imageRef = CGBitmapContextCreateImage (ctx);
-    
-    UIImage *returnImage = [UIImage imageWithCGImage:imageRef];
-    
-    //clean up
-    CGContextRelease(ctx);
-    CGColorSpaceRelease(colorSpace);
-    
-    free(pixelBuffer);
-    CFRelease(inBitmapData);
-    
-    CGColorSpaceRelease(colorSpace);
-    CGImageRelease(imageRef);
-    
-    return returnImage;
-}
-
-
-///*
-// The below produces an effect exactly similar to iOS 7s blur, but is too slow to be practical. I've left it here in case you want to experiment.
+/*
+ The below produces an effect exactly similar to iOS 7s blur, but is too slow to be practical. I've left it here in case you want to experiment.
 
  - (UIImage*)screenshot
  {
@@ -368,6 +290,6 @@ CAAnimation *flatDismissAnimation()
      [containerView insertSubview:imageView atIndex:0];
      [self.view addConstraints:constraintsCenter(imageView, self.view)];
  }
-// */
+ */
 
 @end
