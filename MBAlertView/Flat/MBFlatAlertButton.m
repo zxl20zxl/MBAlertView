@@ -1,12 +1,7 @@
-//
-//  MBFlatAlertButton.m
-//  Freebie
-//
-//  Created by Mo Bitar on 6/12/13.
-//  Copyright (c) 2013 Ora Interactive. All rights reserved.
-//
 
 #import "MBFlatAlertButton.h"
+#import "AutoLayoutHelpers.h"
+#import "UIView+Autolayout.h"
 
 @implementation MBFlatAlertButton
 
