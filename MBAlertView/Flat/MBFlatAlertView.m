@@ -1,6 +1,8 @@
 
 #import "MBFlatAlertView.h"
 #import <Accelerate/Accelerate.h>
+#import "AutoLayoutHelpers.h"
+#import "UIView+Autolayout.h"
 
 @interface MBFlatAlertView ()
 {
@@ -35,7 +37,7 @@
 {
     UIWindow *window = [[[UIApplication sharedApplication] windows] lastObject];
     CGRect statusBarRect = [[UIApplication sharedApplication] statusBarFrame];
-    self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, window.size.width, window.size.height - statusBarRect.size.height)];
+    self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, window.bounds.size.width, window.bounds.size.height - statusBarRect.size.height)];
 }
 
 - (void)viewDidLoad
@@ -377,6 +379,5 @@ CAAnimation *flatDismissAnimation()
     [containerView insertSubview:imageView atIndex:0];
     [self.view addConstraints:constraintsCenter(imageView, self.view)];
 }
-
 
 @end
