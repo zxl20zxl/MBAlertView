@@ -16,4 +16,8 @@ typedef enum {
 @property (nonatomic) UIColor *textColor;
 @property (nonatomic) BOOL hasRightStroke;
 @property (nonatomic) BOOL hasBottomStroke;
+
++ (UIColor*)defaultTextColor;
+
++ (instancetype)buttonWithTitle:(NSString*)title type:(MBFlatAlertButtonType)type action:(MBFlatAlertButtonAction)action;
 @end

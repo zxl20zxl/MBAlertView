@@ -1,6 +1,6 @@
 
 #import "MBFlatAlertView.h"
-//#import "GPUImage.h"
+#import <Accelerate/Accelerate.h>
 
 @interface MBFlatAlertView ()
 {
@@ -20,6 +20,16 @@
 @synthesize contentView = _contentView;
 
 #pragma mark - View Configuration
+
+- (instancetype)init
+{
+    if(self = [super init]) {
+        _horizontalMargin = 20;
+        _hasBlurBackground = NO;
+        _dismissesOnButtonPress = YES;
+    }
+    return self;
+}
 
 - (void)loadView
 {
@@ -112,9 +122,8 @@ static const CGFloat buttonHeight = 40;
     
     [self.view addConstraints:@[
         constraintCenterX(containerView, self.view),
-        constraintWidth(containerView, self.view, -40),
+        constraintWidth(containerView, self.view, -_horizontalMargin*2),
         constraintTop(containerView, titleLabel, -16),
-//        constraintBottom(containerView, _contentView ?: detailsLabel, buttonHeight + (_contentView ? 0 : 15))
         constraintBottom(containerView, buttonsView, 0)
      ]];
     
@@ -137,7 +146,7 @@ static const CGFloat buttonHeight = 40;
     containerView.clipsToBounds = YES;
     
     containerBackground = [UIView newForAutolayoutAndAddToView:containerView];
-    containerBackground.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.95];
+    containerBackground.backgroundColor = [UIColor colorWithWhite:1.0 alpha:_hasBlurBackground ? 0.65 : 0.95];
     
     verticallyCenteredContainer = [UIView newForAutolayoutAndAddToView:containerView];
 }
@@ -167,20 +176,24 @@ static const CGFloat buttonHeight = 40;
     buttonsView = [UIView newForAutolayoutAndAddToView:containerView];
     [self.view addConstraints:@[
          constraintWidth(buttonsView, containerView, 0),
-        constraintEqualAttributes(buttonsView, _contentView ?: detailsLabel, NSLayoutAttributeTop, NSLayoutAttributeBottom, 0),
+        constraintEqualAttributes(buttonsView, _contentView ?: detailsLabel, NSLayoutAttributeTop, NSLayoutAttributeBottom, 10),
          constraintCenterX(buttonsView, containerView),
-         constraintHeight(buttonsView, nil, 75)
+     constraintAttributeWithPriority(buttonsView, nil, NSLayoutAttributeHeight, 0, UILayoutPriorityDefaultLow)
      ]];
 }
 
 - (void)addButtonWithTitle:(NSString*)title type:(MBFlatAlertButtonType)type action:(MBFlatAlertButtonAction)action
 {
-    MBFlatAlertButton *button = [MBFlatAlertButton new];
-    button.translatesAutoresizingMaskIntoConstraints = NO;
-    button.action = action;
-    button.title = title;
-    button.type = type;
+    MBFlatAlertButton *button = [MBFlatAlertButton buttonWithTitle:title type:type action:action];
+  
+    if(!buttons)
+        buttons = [NSMutableArray new];
     
+    [buttons addObject:button];
+}
+
+- (void)addButton:(MBFlatAlertButton*)button
+{
     if(!buttons)
         buttons = [NSMutableArray new];
     
@@ -194,7 +207,9 @@ static const CGFloat buttonHeight = 40;
             [buttonsView addSubview:button];
         [self.view addConstraint:constraintEqualWithMultiplier(button, buttonsView, NSLayoutAttributeWidth, 0, 1.0/buttons.count)];
         [self.view addConstraint:constraintBottom(button, buttonsView, 0)];
-        
+        [self.view addConstraints:constraintsHeightGreaterThanOrEqual(buttonsView, button)];
+        [self.view addConstraint:constraintHeight(button, buttonsView, 0)];
+
         if(idx > 0) {
             MBFlatAlertButton *previousButton = buttons[idx - 1];
             [self.view addConstraint:constraintEqualAttributes(button, previousButton, NSLayoutAttributeLeft, NSLayoutAttributeRight, 0)];
@@ -214,7 +229,8 @@ static const CGFloat buttonHeight = 40;
 {
     if(button.action)
         button.action();
-    [self dismiss];
+    if(_dismissesOnButtonPress)
+        [self dismiss];
 }
 
 #pragma mark - Animation
@@ -264,33 +280,103 @@ CAAnimation *flatDismissAnimation()
 
 #pragma mark - Blur Configuration
 
-/*
- The below produces an effect exactly similar to iOS 7s blur, but is too slow to be practical. I've left it here in case you want to experiment.
- 
- - (UIImage*)screenshot
- {
-     UIWindow *window = [[[UIApplication sharedApplication] windows] lastObject];
-     UIGraphicsBeginImageContextWithOptions(window.bounds.size, YES, 1.0);
-     [window.layer renderInContext:UIGraphicsGetCurrentContext()];
-     UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
-     UIGraphicsEndImageContext();
-     return viewImage;
- }
- 
+-(UIImage *)boxblurImage:(UIImage *)image boxSize:(int)boxSize {
+    //Get CGImage from UIImage
+    CGImageRef img = image.CGImage;
+    
+    //setup variables
+    vImage_Buffer inBuffer, outBuffer;
+    
+    vImage_Error error;
+    
+    void *pixelBuffer;
+    
+    //create vImage_Buffer with data from CGImageRef
+    
+    //These two lines get get the data from the CGImage
+    CGDataProviderRef inProvider = CGImageGetDataProvider(img);
+    CFDataRef inBitmapData = CGDataProviderCopyData(inProvider);
+    
+    //The next three lines set up the inBuffer object based on the attributes of the CGImage
+    inBuffer.width = CGImageGetWidth(img);
+    inBuffer.height = CGImageGetHeight(img);
+    inBuffer.rowBytes = CGImageGetBytesPerRow(img);
+    
+    //This sets the pointer to the data for the inBuffer object
+    inBuffer.data = (void*)CFDataGetBytePtr(inBitmapData);
+    
+    //create vImage_Buffer for output
+    
+    //allocate a buffer for the output image and check if it exists in the next three lines
+    pixelBuffer = malloc(CGImageGetBytesPerRow(img) * CGImageGetHeight(img));
+    
+    if(pixelBuffer == NULL)
+        NSLog(@"No pixelbuffer");
+    
+    //set up the output buffer object based on the same dimensions as the input image
+    outBuffer.data = pixelBuffer;
+    outBuffer.width = CGImageGetWidth(img);
+    outBuffer.height = CGImageGetHeight(img);
+    outBuffer.rowBytes = CGImageGetBytesPerRow(img);
+    
+    //perform convolution - this is the call for our type of data
+    error = vImageBoxConvolve_ARGB8888(&inBuffer, &outBuffer, NULL, 0, 0, boxSize, boxSize, NULL, kvImageEdgeExtend);
+    
+    //check for an error in the call to perform the convolution
+    if (error) {
+        NSLog(@"error from convolution %ld", error);
+    }
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    CGContextRef ctx = CGBitmapContextCreate(outBuffer.data,
+                                             outBuffer.width,
+                                             outBuffer.height,
+                                             8,
+                                             outBuffer.rowBytes,
+                                             colorSpace,
+                                             kCGImageAlphaNoneSkipLast);
+    CGImageRef imageRef = CGBitmapContextCreateImage (ctx);
+    
+    UIImage *returnImage = [UIImage imageWithCGImage:imageRef];
+    
+    //clean up
+    CGContextRelease(ctx);
+    CGColorSpaceRelease(colorSpace);
+    
+    free(pixelBuffer);
+    CFRelease(inBitmapData);
+    CGImageRelease(imageRef);
+    
+    return returnImage;
+}
+
+- (UIImage*)screenshot:(UIView*)view
+{
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, YES, 1.0);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return viewImage;
+}
+
  - (void)addToWindow
- {
-     UIImage *screenshot = [self screenshot];
-     GPUImageGaussianBlurFilter *filter = [GPUImageGaussianBlurFilter new];
-     filter.blurSize = 2;
-     UIImage *processedScreenshot = [filter imageByFilteringImage:screenshot];
-     
-     UIImageView *imageView = [[UIImageView alloc] initWithImage:processedScreenshot];
-     imageView.translatesAutoresizingMaskIntoConstraints = NO;
-     
-     [super addToWindow];
-     [containerView insertSubview:imageView atIndex:0];
-     [self.view addConstraints:constraintsCenter(imageView, self.view)];
- }
- */
+{
+    if(!_hasBlurBackground) {
+        [super addToWindow];
+        return;
+    }
+    UIWindow *window = [[[UIApplication sharedApplication] windows] lastObject];
+    UIImage *screenshot = [self screenshot:window];
+    UIImage *processedScreenshot = [self boxblurImage:screenshot boxSize:131];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:processedScreenshot];
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [super addToWindow];
+    [containerView insertSubview:imageView atIndex:0];
+    [self.view addConstraints:constraintsCenter(imageView, self.view)];
+}
+
 
 @end

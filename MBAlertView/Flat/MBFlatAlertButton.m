@@ -10,6 +10,21 @@
 
 @implementation MBFlatAlertButton
 
++ (UIColor*)defaultTextColor
+{
+    return [UIColor colorWithRed:0.000 green:0.471 blue:0.965 alpha:1];
+}
+
++ (instancetype)buttonWithTitle:(NSString*)title type:(MBFlatAlertButtonType)type action:(MBFlatAlertButtonAction)action
+{
+    MBFlatAlertButton *button = [MBFlatAlertButton new];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    button.action = action;
+    button.title = title;
+    button.type = type;
+    return button;
+}
+
 - (UIFont*)textFont
 {
     if(_type == MBFlatAlertButtonTypeNormal)
@@ -22,7 +37,7 @@
     if(!_textLabel) {
         _textLabel = [UILabel newForAutolayoutAndAddToView:self];
         _textLabel.numberOfLines = 0;
-        _textLabel.textColor = [UIColor colorWithRed:0.000 green:0.471 blue:0.965 alpha:1];
+        _textLabel.textColor = [MBFlatAlertButton defaultTextColor];
         _textLabel.font = [self textFont];
         _textLabel.textAlignment = NSTextAlignmentCenter;
         _textLabel.backgroundColor = [UIColor clearColor];
@@ -51,8 +66,9 @@
          constraintCenterY(_textLabel, self),
          constraintWidth(_textLabel, self, -padding * 2)
      ]];
-//    [_textLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     _textLabel.preferredMaxLayoutWidth = self.bounds.size.width - padding * 2;
+    if(_textColor)
+        _textLabel.textColor = _textColor;
     
 }
 
