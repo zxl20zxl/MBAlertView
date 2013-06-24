@@ -164,11 +164,13 @@ static const CGFloat buttonHeight = 40;
     detailsLabel = [UILabel newForAutolayoutAndAddToView:verticallyCenteredContainer];
     detailsLabel.text = _detailText;
     detailsLabel.textColor = [UIColor colorWithRed:0.137 green:0.141 blue:0.145 alpha:1];
-    detailsLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:12];
+    detailsLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14];
     detailsLabel.backgroundColor = [UIColor clearColor];
     detailsLabel.numberOfLines = 0;
     detailsLabel.textAlignment = NSTextAlignmentCenter;
-    detailsLabel.preferredMaxLayoutWidth = self.view.bounds.size.width - 40;
+    detailsLabel.preferredMaxLayoutWidth = self.view.bounds.size.width - 60;
+    [detailsLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    [detailsLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 }
 
 #pragma mark - Buttons
@@ -177,9 +179,9 @@ static const CGFloat buttonHeight = 40;
 {
     buttonsView = [UIView newForAutolayoutAndAddToView:containerView];
     [self.view addConstraints:@[
-         constraintWidth(buttonsView, containerView, 0),
-        constraintEqualAttributes(buttonsView, _contentView ?: detailsLabel, NSLayoutAttributeTop, NSLayoutAttributeBottom, 10),
-         constraintCenterX(buttonsView, containerView),
+     constraintWidth(buttonsView, containerView, 0),
+     constraintEqualAttributes(buttonsView, _contentView ?: detailsLabel, NSLayoutAttributeTop, NSLayoutAttributeBottom, 10),
+     constraintCenterX(buttonsView, containerView),
      constraintAttributeWithPriority(buttonsView, nil, NSLayoutAttributeHeight, 0, UILayoutPriorityDefaultLow)
      ]];
 }
