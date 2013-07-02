@@ -42,7 +42,8 @@ static MBAlertAbstract *currentAlert;
     return self;
 }
 
-- (void)addToDisplayQueue {
+- (void)addToDisplayQueue
+{
     if(!displayQueue)
         displayQueue = [[NSMutableArray alloc] init];
     if(!dismissQueue)
@@ -59,18 +60,26 @@ static MBAlertAbstract *currentAlert;
     }
 }
 
-- (void)addToWindow {
+- (void)addToWindow
+{
     UIWindow * window = [UIApplication sharedApplication].keyWindow;
     if (!window)
         window = [[UIApplication sharedApplication].windows objectAtIndex:0];
 
     if(self.addsToWindow)
-        [window addSubview:self.view];
-    else [[[window subviews] objectAtIndex:0] addSubview:self.view];
+        [self addToView:window];
+    else if(self.parentView)
+        [self addToView:self.parentView];
+    else [self addToView:[[window subviews] objectAtIndex:0]];
+}
+
+- (void)addToView:(UIView*)view
+{
+    [view addSubview:self.view];
     
     [self performLayout];
     
-    [window resignFirstRespondersForSubviews];
+    [view resignFirstRespondersForSubviews];
     
     [self addPresentAnimation];
     

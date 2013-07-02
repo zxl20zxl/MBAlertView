@@ -28,11 +28,12 @@ extern NSString *const MBAlertDidDismissNotification;
 @property (nonatomic, assign) BOOL shouldPerformBlockAfterDismissal;
 
 @property (nonatomic, strong) NSTimer *hideTimer;
-
+@property (nonatomic, strong) UIView *parentView;
 @property (nonatomic) MBAlertAnimationType animationType;
 
 - (void)dismiss;
 - (void)addToDisplayQueue;
+
 - (void)addToWindow;
 - (void)performLayout;
 

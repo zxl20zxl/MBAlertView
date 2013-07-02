@@ -137,7 +137,7 @@
     self.contentView = [[UIView alloc] initWithFrame:rect];
     
     self.modalBackground = [[UIButton alloc] initWithFrame:self.contentView.frame];
-    self.modalBackground.layer.cornerRadius = 8;
+    self.modalBackground.layer.cornerRadius = 16;
 
     [self.modalBackground setBackgroundColor:self.backgroundColor];
     self.modalBackground.alpha = (_backgroundAlpha > 0 ? _backgroundAlpha : 0.85);
