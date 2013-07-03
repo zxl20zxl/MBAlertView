@@ -60,6 +60,12 @@ static MBAlertAbstract *currentAlert;
     }
 }
 
+- (void)show
+{
+    [dismissQueue addObject:self];
+    [self addToWindow];
+}
+
 - (void)addToWindow
 {
     UIWindow * window = [UIApplication sharedApplication].keyWindow;
@@ -95,9 +101,11 @@ static MBAlertAbstract *currentAlert;
     
 }
 
-- (void)dismiss {
+- (void)dismiss
+{
     if(isPendingDismissal)
         return;
+    
     isPendingDismissal = YES;
     
     if(!retainQueue)
@@ -107,7 +115,8 @@ static MBAlertAbstract *currentAlert;
     [retainQueue addObject:self];
     [dismissQueue removeObject:self];
     
-    currentAlert = nil;
+    if([self isEqual:currentAlert])
+        currentAlert = nil;
     
     [self addDismissAnimation];
 }
@@ -126,6 +135,11 @@ static MBAlertAbstract *currentAlert;
         currentAlert = alert;
         [currentAlert addToWindow];
     }
+}
+
+- (BOOL)isOnScreen
+{
+    return [currentAlert isEqual:self];
 }
 
 + (void)dismissCurrentHUD {

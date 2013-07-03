@@ -33,9 +33,12 @@ extern NSString *const MBAlertDidDismissNotification;
 
 - (void)dismiss;
 - (void)addToDisplayQueue;
+- (void)show;
 
 - (void)addToWindow;
 - (void)performLayout;
+- (BOOL)isOnScreen;
+
 
 // dismisses current hud in queue, whether or not its visible
 + (void)dismissCurrentHUD;
