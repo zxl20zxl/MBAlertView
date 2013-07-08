@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
 
   s.source_files = 'MBAlertView/**/*.{h,m}'
 
-  s.frameworks  = 'QuartzCore'
+  s.frameworks  = 'QuartzCore', 'Accelerate'
 
   s.requires_arc = true
 end
