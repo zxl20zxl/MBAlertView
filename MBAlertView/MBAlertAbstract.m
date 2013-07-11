@@ -44,10 +44,7 @@ static MBAlertAbstract *currentAlert;
 
 - (void)addToDisplayQueue
 {
-    if(!displayQueue)
-        displayQueue = [[NSMutableArray alloc] init];
-    if(!dismissQueue)
-        dismissQueue = [[NSMutableArray alloc] init];
+    [self initQueues];
     
     [displayQueue addObject:self];
     [dismissQueue addObject:self];
@@ -60,8 +57,17 @@ static MBAlertAbstract *currentAlert;
     }
 }
 
+- (void)initQueues
+{
+    if(!displayQueue)
+        displayQueue = [[NSMutableArray alloc] init];
+    if(!dismissQueue)
+        dismissQueue = [[NSMutableArray alloc] init];
+}
+
 - (void)show
 {
+    [self initQueues];
     [dismissQueue addObject:self];
     [self addToWindow];
 }

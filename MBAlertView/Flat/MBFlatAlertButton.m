@@ -10,6 +10,20 @@
     return [UIColor colorWithRed:0.000 green:0.471 blue:0.965 alpha:1];
 }
 
+- (UIColor*)textColorForType:(MBFlatAlertButtonType)type
+{
+    switch (type) {
+        case MBFlatAlertButtonTypeBold:
+            return [self.class defaultTextColor];
+        case MBFlatAlertButtonTypeGreen:
+            return [UIColor greenColor];
+        case MBFlatAlertButtonTypeNormal:
+            return [self.class defaultTextColor];
+        case MBFlatAlertButtonTypeRed:
+            return [UIColor redColor];
+    }
+}
+
 + (instancetype)buttonWithTitle:(NSString*)title type:(MBFlatAlertButtonType)type action:(MBFlatAlertButtonAction)action
 {
     MBFlatAlertButton *button = [MBFlatAlertButton new];
@@ -24,7 +38,7 @@
 {
     if(_type == MBFlatAlertButtonTypeNormal)
         return [UIFont fontWithName:@"HelveticaNeue-Light" size:14];
-    else return [UIFont fontWithName:@"HelveticaNeue-Medium" size:14];;
+    else return [UIFont fontWithName:@"HelveticaNeue-Medium" size:14];
 }
 
 - (UILabel*)textLabel
@@ -32,7 +46,7 @@
     if(!_textLabel) {
         _textLabel = [UILabel newForAutolayoutAndAddToView:self];
         _textLabel.numberOfLines = 0;
-        _textLabel.textColor = [MBFlatAlertButton defaultTextColor];
+        _textLabel.textColor = [self textColorForType:self.type];
         _textLabel.font = [self textFont];
         _textLabel.textAlignment = NSTextAlignmentCenter;
         _textLabel.backgroundColor = [UIColor clearColor];

@@ -5,7 +5,9 @@ typedef void (^MBFlatAlertButtonAction)();
 
 typedef enum {
     MBFlatAlertButtonTypeNormal,
-    MBFlatAlertButtonTypeBold
+    MBFlatAlertButtonTypeBold,
+    MBFlatAlertButtonTypeRed,
+    MBFlatAlertButtonTypeGreen,
 } MBFlatAlertButtonType;
 
 @interface MBFlatAlertButton : UIButton

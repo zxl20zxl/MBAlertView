@@ -6,8 +6,6 @@
 
 @interface MBFlatAlertView ()
 {
-    UILabel *titleLabel;
-    UILabel *detailsLabel;
     UIView *containerView;
     UIView *backgroundView;
     UIView *containerBackground;
@@ -19,7 +17,7 @@
 @end
 
 @implementation MBFlatAlertView
-@synthesize contentView = _contentView;
+@synthesize contentView = _contentView, titleLabel, detailsLabel;
 
 #pragma mark - View Configuration
 
@@ -29,6 +27,9 @@
         _horizontalMargin = 20;
         _hasBlurBackground = NO;
         _dismissesOnButtonPress = YES;
+        
+        titleLabel = [UILabel newForAutolayoutAndAddToView:nil];
+        detailsLabel = [UILabel newForAutolayoutAndAddToView:nil];
     }
     return self;
 }
@@ -37,7 +38,8 @@
 {
     UIWindow *window = [[[UIApplication sharedApplication] windows] lastObject];
     CGRect statusBarRect = [[UIApplication sharedApplication] statusBarFrame];
-    self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, window.bounds.size.width, window.bounds.size.height - statusBarRect.size.height)];
+    self.view = [[UIView alloc] initWithFrame:
+                 CGRectMake(0, 0, window.bounds.size.width, window.bounds.size.height - statusBarRect.size.height)];
 }
 
 - (void)viewDidLoad
@@ -155,13 +157,15 @@ static const CGFloat buttonHeight = 40;
 
 - (void)configureLabels
 {
-    titleLabel = [UILabel newForAutolayoutAndAddToView:containerView];
+//    titleLabel = [UILabel newForAutolayoutAndAddToView:containerView];
+    [containerView addSubview:titleLabel];
     titleLabel.text = _alertTitle;
     titleLabel.textColor = [UIColor blackColor];
     titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:16];
     titleLabel.backgroundColor = [UIColor clearColor];
     
-    detailsLabel = [UILabel newForAutolayoutAndAddToView:verticallyCenteredContainer];
+//    detailsLabel = [UILabel newForAutolayoutAndAddToView:verticallyCenteredContainer];
+    [verticallyCenteredContainer addSubview:detailsLabel];
     detailsLabel.text = _detailText;
     detailsLabel.textColor = [UIColor colorWithRed:0.137 green:0.141 blue:0.145 alpha:1];
     detailsLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14];
@@ -247,7 +251,7 @@ static const CGFloat buttonHeight = 40;
         containerView.alpha = 0.0;
     }];
     
-    [containerView.layer addAnimation:flatDismissAnimation() forKey:@"anim"];
+    [containerView.layer addAnimation:[self.class flatDismissAnimation] forKey:@"anim"];
     
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -257,7 +261,7 @@ static const CGFloat buttonHeight = 40;
 
 #define scale(x, y, z) [NSValue valueWithCATransform3D:CATransform3DMakeScale(x, y, z)]
 
-CAAnimation *flatDismissAnimation()
++ (CAAnimation*)flatDismissAnimation
 {
     NSArray *frameValues = @[scale(1.0, 1.0, 1.0), scale(0.7, 0.7, 0.7)];
     NSArray *frameTimes = @[@(0.0), @(1.0)];
@@ -278,7 +282,8 @@ CAAnimation *flatDismissAnimation()
     alert.alertTitle = title;
     alert.isRounded = YES;
     alert.detailText = detailText;
-    [alert addButtonWithTitle:cancelTitle type:MBFlatAlertButtonTypeBold action:cancelBlock];
+    if(cancelTitle)
+        [alert addButtonWithTitle:cancelTitle type:MBFlatAlertButtonTypeBold action:cancelBlock];
     return alert;
 }
 

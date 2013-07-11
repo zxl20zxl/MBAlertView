@@ -7,6 +7,10 @@
 @interface MBFlatAlertView : MBAlertAbstract
 @property (nonatomic, copy) NSString *alertTitle;
 @property (nonatomic, copy) NSString *detailText;
+
+@property (nonatomic) UILabel *titleLabel;
+@property (nonatomic) UILabel *detailsLabel;
+
 @property (nonatomic, readonly) UIView *contentView;
 @property (nonatomic) CGFloat contentViewHeight;
 @property (nonatomic) BOOL isRounded;
@@ -21,5 +25,5 @@
 
 + (instancetype)alertWithTitle:(NSString*)title detailText:(NSString*)detailText cancelTitle:(NSString*)cancelTitle cancelBlock:(MBFlatAlertButtonAction)cancelBlock;
 
-CAAnimation *flatDismissAnimation();
++ (CAAnimation*)flatDismissAnimation;
 @end
