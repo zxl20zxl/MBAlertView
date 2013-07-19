@@ -78,11 +78,11 @@ static MBAlertAbstract *currentAlert;
     if (!window)
         window = [[UIApplication sharedApplication].windows objectAtIndex:0];
 
-    if(self.addsToWindow)
-        [self addToView:window];
-    else if(self.parentView)
+
+    if(self.parentView)
         [self addToView:self.parentView];
-    else [self addToView:[[window subviews] objectAtIndex:0]];
+    else [self addToView:window];
+//    else [self addToView:[[window subviews] objectAtIndex:0]];
 }
 
 - (void)addToView:(UIView*)view

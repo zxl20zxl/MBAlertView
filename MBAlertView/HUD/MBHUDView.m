@@ -43,6 +43,7 @@
     alert.bodyText = body;
     alert.hudType = type;
     alert.hudHideDelay = delay;
+    alert.itemColor = [UIColor whiteColor];
     alert.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.9];
     
     if(type == MBAlertViewHUDTypeExclamationMark) {
