@@ -34,13 +34,13 @@
     return self;
 }
 
-- (void)loadView
-{
-    UIWindow *window = [[[UIApplication sharedApplication] windows] lastObject];
-    CGRect statusBarRect = [[UIApplication sharedApplication] statusBarFrame];
-    self.view = [[UIView alloc] initWithFrame:
-                 CGRectMake(0, 0, window.bounds.size.width, window.bounds.size.height - statusBarRect.size.height)];
-}
+//- (void)loadView
+//{
+//    UIWindow *window = [[[UIApplication sharedApplication] windows] lastObject];
+//    CGRect statusBarRect = [[UIApplication sharedApplication] statusBarFrame];
+//    self.view = [[UIView alloc] initWithFrame:
+//                 CGRectMake(0, 0, window.bounds.size.width, window.bounds.size.height - statusBarRect.size.height)];
+//}
 
 - (void)viewDidLoad
 {
