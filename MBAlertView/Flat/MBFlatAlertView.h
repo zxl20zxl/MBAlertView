@@ -15,7 +15,6 @@
 @property (nonatomic) CGFloat contentViewHeight;
 @property (nonatomic) BOOL isRounded;
 @property (nonatomic) CGFloat horizontalMargin;
-@property (nonatomic) BOOL hasBlurBackground;
 
 // default is YES
 @property (nonatomic) BOOL dismissesOnButtonPress;
