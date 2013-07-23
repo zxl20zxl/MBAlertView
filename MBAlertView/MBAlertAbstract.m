@@ -127,7 +127,8 @@ static MBAlertAbstract *currentAlert;
     [self addDismissAnimation];
 }
 
-- (void)removeAlertFromView {
+- (void)removeAlertFromView
+{
     id block = self.uponDismissalBlock;
     if (![block isEqual:[NSNull null]] && block) {
         ((void (^)())block)();

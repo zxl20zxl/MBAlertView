@@ -1,10 +1,10 @@
 
-#import "MBAlertAbstract.h"
+#import "MBFlatAlertAbstract.h"
 #import "MBFlatAlertButton.h"
 
 @class MBFlatAlertButton;
 
-@interface MBFlatAlertView : MBAlertAbstract
+@interface MBFlatAlertView : MBFlatAlertAbstract
 @property (nonatomic, copy) NSString *alertTitle;
 @property (nonatomic, copy) NSString *detailText;
 
@@ -23,6 +23,4 @@
 - (void)addButton:(MBFlatAlertButton*)button;
 
 + (instancetype)alertWithTitle:(NSString*)title detailText:(NSString*)detailText cancelTitle:(NSString*)cancelTitle cancelBlock:(MBFlatAlertButtonAction)cancelBlock;
-
-+ (CAAnimation*)flatDismissAnimation;
 @end
