@@ -8,8 +8,8 @@
 @property (nonatomic, copy) NSString *alertTitle;
 @property (nonatomic, copy) NSString *detailText;
 
-@property (nonatomic) UILabel *titleLabel;
-@property (nonatomic) UILabel *detailsLabel;
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *detailsLabel;
 
 @property (nonatomic, readonly) UIView *contentView;
 @property (nonatomic) CGFloat contentViewHeight;

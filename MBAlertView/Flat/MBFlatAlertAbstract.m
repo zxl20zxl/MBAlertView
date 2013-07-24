@@ -9,7 +9,6 @@
 
 - (UIView*)viewToApplyPresentationAnimationsOn
 {
-    assert(NO);
     return nil;
 }
 

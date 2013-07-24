@@ -13,9 +13,9 @@ typedef enum {
 @interface MBFlatAlertButton : UIButton
 @property (nonatomic, copy) MBFlatAlertButtonAction action;
 @property (nonatomic, copy) NSString *title;
-@property (nonatomic) UILabel *textLabel;
+@property (nonatomic, strong) UILabel *textLabel;
 @property (nonatomic) MBFlatAlertButtonType type;
-@property (nonatomic) UIColor *textColor;
+@property (nonatomic, strong) UIColor *textColor;
 @property (nonatomic) BOOL hasRightStroke;
 @property (nonatomic) BOOL hasBottomStroke;
 
