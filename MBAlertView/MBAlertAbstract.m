@@ -192,7 +192,7 @@ static MBAlertAbstract *currentAlert;
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
-    return (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown | UIInterfaceOrientationLandscapeLeft | UIInterfaceOrientationLandscapeRight);
+    return (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown | UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight);
 }
 
 #pragma mark - Animations
