@@ -1,5 +1,7 @@
 
 #import "MBFlatAlertAbstract.h"
+#import "AutoLayoutHelpers.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface MBFlatAlertAbstract ()
 

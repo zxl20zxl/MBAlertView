@@ -2,6 +2,7 @@
 #import "MBFlatAlertView.h"
 #import "AutoLayoutHelpers.h"
 #import "UIView+Autolayout.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface MBFlatAlertView ()
 {

@@ -1,7 +1,6 @@
 
 #import "MBFlatAlertButton.h"
 #import "AutoLayoutHelpers.h"
-#import "UIView+Autolayout.h"
 
 @implementation MBFlatAlertButton
 
