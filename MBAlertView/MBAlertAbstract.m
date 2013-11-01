@@ -11,6 +11,7 @@
 #import "MBHUDView.h"
 #import "MBAlertViewButton.h"
 #import "UIView+Alert.h"
+#import <QuartzCore/QuartzCore.h>
 
 NSString *const MBAlertDidAppearNotification = @"MBAlertDidAppearNotification";
 NSString *const MBAlertDidDismissNotification = @"MBAlertDidDismissNotification";
@@ -44,10 +45,7 @@ static MBAlertAbstract *currentAlert;
 
 - (void)addToDisplayQueue
 {
-    if(!displayQueue)
-        displayQueue = [[NSMutableArray alloc] init];
-    if(!dismissQueue)
-        dismissQueue = [[NSMutableArray alloc] init];
+    [self initQueues];
     
     [displayQueue addObject:self];
     [dismissQueue addObject:self];
@@ -60,8 +58,17 @@ static MBAlertAbstract *currentAlert;
     }
 }
 
+- (void)initQueues
+{
+    if(!displayQueue)
+        displayQueue = [[NSMutableArray alloc] init];
+    if(!dismissQueue)
+        dismissQueue = [[NSMutableArray alloc] init];
+}
+
 - (void)show
 {
+    [self initQueues];
     [dismissQueue addObject:self];
     [self addToWindow];
 }
@@ -72,11 +79,11 @@ static MBAlertAbstract *currentAlert;
     if (!window)
         window = [[UIApplication sharedApplication].windows objectAtIndex:0];
 
-    if(self.addsToWindow)
-        [self addToView:window];
-    else if(self.parentView)
+
+    if(self.parentView)
         [self addToView:self.parentView];
-    else [self addToView:[[window subviews] objectAtIndex:0]];
+    else [self addToView:window];
+//    else [self addToView:[[window subviews] objectAtIndex:0]];
 }
 
 - (void)addToView:(UIView*)view
@@ -121,7 +128,8 @@ static MBAlertAbstract *currentAlert;
     [self addDismissAnimation];
 }
 
-- (void)removeAlertFromView {
+- (void)removeAlertFromView
+{
     id block = self.uponDismissalBlock;
     if (![block isEqual:[NSNull null]] && block) {
         ((void (^)())block)();
@@ -185,7 +193,7 @@ static MBAlertAbstract *currentAlert;
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
-    return (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown | UIInterfaceOrientationLandscapeLeft | UIInterfaceOrientationLandscapeRight);
+    return (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown | UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight);
 }
 
 #pragma mark - Animations
