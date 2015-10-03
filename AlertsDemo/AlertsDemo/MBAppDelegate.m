@@ -10,6 +10,9 @@
 #import "MBHUDView.h"
 #import "RootViewController.h"
 
+/**
+ *  update demo
+ */
 @implementation MBAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
